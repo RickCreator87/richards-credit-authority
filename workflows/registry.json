@@ -1,0 +1,8 @@
+{
+  "workflows": [
+    "issue_credit.workflow.json",
+    "approve_loan.workflow.json",
+    "disburse_funds.workflow.json",
+    "sync_ledger.workflow.json"
+  ]
+}
