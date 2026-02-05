@@ -1,0 +1,7 @@
+cd /workspace
+
+# If not already added:
+git remote add origin https://github.com/RickCreator87/richards-credit-authority.git
+
+# Push to GitHub (you'll be prompted for credentials):
+git push -u origin main
