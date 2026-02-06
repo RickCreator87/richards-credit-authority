@@ -1,0 +1,514 @@
+name: Webhook Testing
+
+on:
+  workflow_dispatch:
+    inputs:
+      event_type:
+        description: 'Webhook event type to test'
+        required: true
+        default: 'loan.created'
+        type: choice
+        options:
+        - loan.created
+        - loan.updated
+        - loan.paid
+        - authority.updated
+        - validation.completed
+      payload_file:
+        description: 'Custom payload file (optional)'
+        required: false
+        default: ''
+      secret:
+        description: 'Webhook secret (optional)'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  test-webhook:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: |
+        npm init -y
+        npm install express body-parser crypto
+        
+    - name: Generate test payload
+      id: generate_payload
+      run: |
+        echo "📦 Generating test payload for event: ${{ github.event.inputs.event_type }}"
+        
+        mkdir -p test-payloads
+        
+        # Load or generate payload
+        if [ -n "${{ github.event.inputs.payload_file }}" ] && [ -f "${{ github.event.inputs.payload_file }}" ]; then
+          cp "${{ github.event.inputs.payload_file }}" test-payloads/payload.json
+          echo "Using custom payload file"
+        else
+          # Generate default payload based on event type
+          case "${{ github.event.inputs.event_type }}" in
+            loan.created)
+              cat > test-payloads/payload.json << EOF
+              {
+                "event": "loan.created",
+                "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+                "data": {
+                  "loanId": "LOAN-$(date +%s)",
+                  "amount": 50000,
+                  "borrower": "Test Borrower",
+                  "term": 36,
+                  "interestRate": 5.5,
+                  "status": "created",
+                  "createdAt": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+                },
+                "metadata": {
+                  "source": "test-webhook",
+                  "runId": "${{ github.run_id }}"
+                }
+              }
+              EOF
+              ;;
+              
+            loan.updated)
+              cat > test-payloads/payload.json << EOF
+              {
+                "event": "loan.updated",
+                "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+                "data": {
+                  "loanId": "LOAN-12345",
+                  "updates": {
+                    "status": "approved",
+                    "approvedAt": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+                    "approvedBy": "Richard S. Creator"
+                  }
+                },
+                "metadata": {
+                  "source": "test-webhook",
+                  "runId": "${{ github.run_id }}"
+                }
+              }
+              EOF
+              ;;
+              
+            loan.paid)
+              cat > test-payloads/payload.json << EOF
+              {
+                "event": "loan.paid",
+                "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+                "data": {
+                  "loanId": "LOAN-12345",
+                  "payment": {
+                    "amount": 1523.45,
+                    "date": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+                    "type": "regular"
+                  },
+                  "balance": 48576.55
+                },
+                "metadata": {
+                  "source": "test-webhook",
+                  "runId": "${{ github.run_id }}"
+                }
+              }
+              EOF
+              ;;
+              
+            authority.updated)
+              cat > test-payloads/payload.json << EOF
+              {
+                "event": "authority.updated",
+                "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+                "data": {
+                  "field": "lendingCapacity",
+                  "oldValue": "$5,000,000.00",
+                  "newValue": "$5,500,000.00",
+                  "updatedBy": "Richard S. Creator",
+                  "reason": "Increased capacity based on portfolio performance"
+                },
+                "metadata": {
+                  "source": "test-webhook",
+                  "runId": "${{ github.run_id }}"
+                }
+              }
+              EOF
+              ;;
+              
+            validation.completed)
+              cat > test-payloads/payload.json << EOF
+              {
+                "event": "validation.completed",
+                "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+                "data": {
+                  "validationId": "VALID-$(date +%s)",
+                  "type": "full",
+                  "status": "passed",
+                  "filesValidated": 42,
+                  "errors": 0,
+                  "warnings": 3,
+                  "duration": 2.5
+                },
+                "metadata": {
+                  "source": "test-webhook",
+                  "runId": "${{ github.run_id }}"
+                }
+              }
+              EOF
+              ;;
+          esac
+          
+          echo "Generated default payload for ${{ github.event.inputs.event_type }}"
+        fi
+        
+        # Display payload
+        echo "Payload:"
+        cat test-payloads/payload.json | python3 -m json.tool | head -50
+        
+    - name: Start test webhook server
+      id: start_server
+      run: |
+        echo "🚀 Starting test webhook server..."
+        
+        # Create test server
+        cat > test-server.js << 'EOF'
+        const express = require('express');
+        const bodyParser = require('body-parser');
+        const crypto = require('crypto');
+        
+        const app = express();
+        const port = 3000;
+        
+        app.use(bodyParser.json());
+        
+        // Store received webhooks
+        const receivedWebhooks = [];
+        
+        // Simple webhook endpoint
+        app.post('/webhook', (req, res) => {
+          console.log('📨 Webhook received:', req.body.event);
+          
+          // Verify signature if secret provided
+          const secret = process.env.WEBHOOK_SECRET;
+          if (secret) {
+            const signature = req.headers['x-hub-signature-256'];
+            if (!signature) {
+              console.log('❌ Missing signature');
+              return res.status(401).send('Missing signature');
+            }
+            
+            const hmac = crypto.createHmac('sha256', secret);
+            const digest = 'sha256=' + hmac.update(JSON.stringify(req.body)).digest('hex');
+            
+            if (signature !== digest) {
+              console.log('❌ Invalid signature');
+              return res.status(401).send('Invalid signature');
+            }
+          }
+          
+          // Store webhook
+          receivedWebhooks.push({
+            timestamp: new Date().toISOString(),
+            event: req.body.event,
+            data: req.body.data,
+            headers: req.headers
+          });
+          
+          console.log('✅ Webhook processed successfully');
+          res.status(200).json({ 
+            status: 'success', 
+            message: 'Webhook received',
+            receivedAt: new Date().toISOString()
+          });
+        });
+        
+        // Endpoint to list received webhooks
+        app.get('/webhooks', (req, res) => {
+          res.json({
+            count: receivedWebhooks.length,
+            webhooks: receivedWebhooks
+          });
+        });
+        
+        // Health check
+        app.get('/health', (req, res) => {
+          res.json({ status: 'healthy', time: new Date().toISOString() });
+        });
+        
+        const server = app.listen(port, () => {
+          console.log(`Test webhook server listening on port ${port}`);
+          console.log(`Webhook endpoint: http://localhost:${port}/webhook`);
+          console.log(`Health check: http://localhost:${port}/health`);
+        });
+        
+        // Handle shutdown
+        process.on('SIGTERM', () => {
+          server.close(() => {
+            console.log('Server stopped');
+          });
+        });
+        EOF
+        
+        # Start server in background
+        WEBHOOK_SECRET="${{ github.event.inputs.secret }}" node test-server.js &
+        SERVER_PID=$!
+        
+        echo "server_pid=$SERVER_PID" >> $GITHUB_OUTPUT
+        
+        # Wait for server to start
+        sleep 3
+        
+        # Test health endpoint
+        if curl -f http://localhost:3000/health; then
+          echo "✅ Server started successfully"
+          echo "server_started=true" >> $GITHUB_OUTPUT
+        else
+          echo "❌ Server failed to start"
+          echo "server_started=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
+        
+    - name: Send test webhook
+      id: send_webhook
+      run: |
+        echo "📤 Sending test webhook..."
+        
+        PAYLOAD_FILE="test-payloads/payload.json"
+        
+        if [ -n "${{ github.event.inputs.secret }}" ]; then
+          echo "Using secret for signature"
+          
+          # Generate signature
+          SECRET="${{ github.event.inputs.secret }}"
+          SIGNATURE=$(node -e "
+            const crypto = require('crypto');
+            const payload = require('fs').readFileSync('$PAYLOAD_FILE', 'utf8');
+            const hmac = crypto.createHmac('sha256', '$SECRET');
+            const digest = 'sha256=' + hmac.update(payload).digest('hex');
+            console.log(digest);
+          ")
+          
+          echo "Signature: $SIGNATURE"
+          
+          # Send with signature
+          RESPONSE=$(curl -s -o response.json -w "%{http_code}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -H "X-Hub-Signature-256: $SIGNATURE" \
+            -H "X-GitHub-Event: ${{ github.event.inputs.event_type }}" \
+            -d @"$PAYLOAD_FILE" \
+            http://localhost:3000/webhook)
+            
+        else
+          echo "Sending without signature"
+          
+          # Send without signature
+          RESPONSE=$(curl -s -o response.json -w "%{http_code}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -H "X-GitHub-Event: ${{ github.event.inputs.event_type }}" \
+            -d @"$PAYLOAD_FILE" \
+            http://localhost:3000/webhook)
+        fi
+        
+        echo "Response code: $RESPONSE"
+        echo "Response body:"
+        cat response.json | python3 -m json.tool || cat response.json
+        
+        if [ "$RESPONSE" -eq 200 ]; then
+          echo "✅ Webhook sent successfully"
+          echo "webhook_sent=true" >> $GITHUB_OUTPUT
+        else
+          echo "❌ Webhook failed with code: $RESPONSE"
+          echo "webhook_sent=false" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Verify webhook processing
+      id: verify_webhook
+      run: |
+        echo "🔍 Verifying webhook processing..."
+        
+        # Check received webhooks
+        curl -s http://localhost:3000/webhooks > webhooks.json
+        
+        echo "Received webhooks:"
+        cat webhooks.json | python3 -m json.tool
+        
+        COUNT=$(cat webhooks.json | python3 -c "import json, sys; print(len(json.load(sys.stdin)['webhooks']))")
+        
+        if [ "$COUNT" -gt 0 ]; then
+          echo "✅ Webhook processed successfully"
+          echo "webhook_processed=true" >> $GITHUB_OUTPUT
+        else
+          echo "❌ No webhooks received"
+          echo "webhook_processed=false" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Test webhook handler
+      id: test_handler
+      run: |
+        echo "🧪 Testing webhook handler..."
+        
+        if [ -f "Webhook/handler.js" ]; then
+          echo "Found webhook handler, testing..."
+          
+          # Create a simple test
+          cat > test-handler.js << 'EOF'
+          const handler = require('./Webhook/handler.js');
+          const payload = require('./test-payloads/payload.json');
+          
+          // Mock request and response
+          const mockReq = {
+            body: payload,
+            headers: {
+              'x-hub-signature-256': 'test-signature',
+              'x-github-event': payload.event
+            }
+          };
+          
+          const mockRes = {
+            statusCode: 200,
+            json: function(data) {
+              console.log('Response:', data);
+              return this;
+            },
+            send: function(data) {
+              console.log('Send:', data);
+              return this;
+            }
+          };
+          
+          // Test the handler
+          try {
+            handler(mockReq, mockRes);
+            console.log('✅ Handler test completed');
+          } catch (error) {
+            console.error('❌ Handler test failed:', error);
+            process.exit(1);
+          }
+          EOF
+          
+          if node test-handler.js; then
+            echo "✅ Webhook handler test passed"
+            echo "handler_test_passed=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Webhook handler test failed"
+            echo "handler_test_passed=false" >> $GITHUB_OUTPUT
+          fi
+        else
+          echo "📭 No webhook handler found"
+          echo "handler_test_passed=skipped" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Stop test server
+      if: always()
+      run: |
+        echo "🛑 Stopping test server..."
+        
+        if [ -n "${{ steps.start_server.outputs.server_pid }}" ]; then
+          kill ${{ steps.start_server.outputs.server_pid }} 2>/dev/null || true
+          echo "Server stopped"
+        fi
+        
+    - name: Generate webhook test report
+      if: always()
+      run: |
+        echo "📊 Generating webhook test report..."
+        
+        mkdir -p webhook-reports
+        
+        cat > webhook-reports/report.md << EOF
+        # Webhook Test Report
+        
+        Generated: $(date)
+        
+        ## Test Configuration
+        - Event Type: ${{ github.event.inputs.event_type }}
+        - Payload File: ${{ github.event.inputs.payload_file || 'Generated' }}
+        - Secret Used: ${{ github.event.inputs.secret != '' && 'Yes' || 'No' }}
+        
+        ## Test Results
+        
+        | Step | Status | Details |
+        |------|--------|---------|
+        | Server Start | ${{ steps.start_server.outputs.server_started }} | |
+        | Webhook Send | ${{ steps.send_webhook.outputs.webhook_sent }} | Response code: $(cat response.json 2>/dev/null | grep -o '"statusCode":[0-9]*' | cut -d: -f2 || echo 'N/A') |
+        | Webhook Processing | ${{ steps.verify_webhook.outputs.webhook_processed }} | Webhooks received: $(cat webhooks.json 2>/dev/null | grep -o '"count":[0-9]*' | cut -d: -f2 || echo '0') |
+        | Handler Test | ${{ steps.test_handler.outputs.handler_test_passed }} | |
+        
+        ## Payload
+        
+        \`\`\`json
+        $(cat test-payloads/payload.json 2>/dev/null | python3 -m json.tool || echo 'No payload')
+        \`\`\`
+        
+        ## Response
+        
+        \`\`\`json
+        $(cat response.json 2>/dev/null | python3 -m json.tool || echo 'No response')
+        \`\`\`
+        
+        ## Recommendations
+        
+        1. **Signature Verification**: Always verify webhook signatures in production
+        2. **Error Handling**: Implement robust error handling in webhook handlers
+        3. **Logging**: Log all webhook events for audit purposes
+        4. **Retry Logic**: Implement retry logic for failed webhooks
+        EOF
+        
+        # Save artifacts
+        cp test-payloads/payload.json webhook-reports/payload.json 2>/dev/null || true
+        cp response.json webhook-reports/response.json 2>/dev/null || true
+        cp webhooks.json webhook-reports/webhooks.json 2>/dev/null || true
+        
+    - name: Upload webhook test reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: webhook-test-reports
+        path: |
+          webhook-reports/
+          test-payloads/
+          
+    - name: Post test summary
+      if: always()
+      run: |
+        echo "## Webhook Test Results 📨" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Event Type:** ${{ github.event.inputs.event_type }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [ "${{ steps.start_server.outputs.server_started }}" == "true" ]; then
+          echo "✅ **Server**: Started successfully" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ **Server**: Failed to start" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ "${{ steps.send_webhook.outputs.webhook_sent }}" == "true" ]; then
+          echo "✅ **Webhook**: Sent successfully" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ **Webhook**: Failed to send" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ "${{ steps.verify_webhook.outputs.webhook_processed }}" == "true" ]; then
+          echo "✅ **Processing**: Webhook received and processed" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ **Processing**: Webhook not received" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ "${{ steps.test_handler.outputs.handler_test_passed }}" == "true" ]; then
+          echo "✅ **Handler**: Test passed" >> $GITHUB_STEP_SUMMARY
+        elif [ "${{ steps.test_handler.outputs.handler_test_passed }}" == "skipped" ]; then
+          echo "➖ **Handler**: No handler found" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ **Handler**: Test failed" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "📁 Detailed reports available in artifacts" >> $GITHUB_STEP_SUMMARY
