@@ -278,10 +278,10 @@ updates:
 
 # ============ SIGNATURE ============
 signatureBlock:
-  printedName: "Richard D. Kindler"
-  digitalSignature: "gpg:0xABC123DEF456"
-  date: "November 1, 2026
-  8"
+    printedName: "Richard D. Kindler"
+    digitalSignature: "gpg:0xABC123DEF456"
+    date: "November 1, 2026"
+    witness: "[Independent Witness Name]"
   witness: "[Independent Witness Name]"
   witnessSignature: "________________________"
 ```
