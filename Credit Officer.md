@@ -1,0 +1,13 @@
+Kko()
+Credit Officer
+
+```yaml
+permissions:
+  - perm_read_self
+  - perm_update_contact
+  - perm_view_credit_summary
+  - perm_create_request
+  - perm_issue_credit
+  - perm_view_others
+  - perm_verify_identity
+```
