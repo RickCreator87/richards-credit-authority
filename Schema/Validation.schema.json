@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ValidationRules",
+  "type": "object",
+  "required": ["rules"],
+  "properties": {
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "scope", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "scope": { "type": "string" },
+          "description": { "type": "string" },
+          "applies_to": { "type": "array", "items": { "type": "string" } },
+          "severity": {
+            "type": "string",
+            "enum": ["error", "warning", "info"]
+          }
+        }
+      }
+    }
+  }
+}
