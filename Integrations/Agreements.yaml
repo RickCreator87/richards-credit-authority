@@ -1,0 +1,6 @@
+name: richard-loaner-agreements
+type: git_repo
+url: https://github.com/RickCreator87/richard-loaner-agreements
+contracts:
+  - id: generate_founder_loan_agreement
+  - id: generate_personal_credit_line_agreement
