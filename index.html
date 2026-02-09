@@ -1,61 +1,765 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitDigital | Credit Authority Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <title>Richard's Credit Authority</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-alt: #0b1120;
+      --card: #020617;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --danger: #f97373;
+      --success: #4ade80;
+      --radius: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+      color: var(--text);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.9));
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #38bdf8, #0ea5e9 40%, #0369a1 100%);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.7);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-text span:first-child {
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      font-size: 0.95rem;
+    }
+
+    .brand-text span:last-child {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: all 0.18s ease-out;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      border-color: rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1.75rem 1.25rem 2.5rem;
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      header {
+        position: static;
+      }
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 2.4vw, 2.2rem);
+    }
+
+    h2 {
+      font-size: 1rem;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.16em;
+    }
+
+    h3 {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+    }
+
+    p {
+      margin: 0 0 0.75rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .pill {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--muted);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .pill--accent {
+      border-color: rgba(56, 189, 248, 0.7);
+      color: var(--accent);
+      background: rgba(15, 23, 42, 1);
+    }
+
+    .hero-card {
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.12), transparent 60%),
+        var(--bg-alt);
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 1.4rem 1.4rem 1.2rem;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.9);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.1fr);
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 720px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .hero-badges {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem;
+      margin-top: 0.75rem;
+    }
+
+    @media (max-width: 480px) {
+      .hero-badges {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .badge-card {
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.95);
+      padding: 0.6rem 0.7rem;
+      font-size: 0.78rem;
+    }
+
+    .badge-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .badge-value {
+      font-size: 0.8rem;
+      color: var(--text);
+      margin-top: 0.1rem;
+    }
+
+    .badge-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      margin-top: 0.25rem;
+    }
+
+    .badge-chip {
+      font-size: 0.68rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--muted);
+    }
+
+    .badge-chip--accent {
+      border-color: rgba(56, 189, 248, 0.7);
+      color: var(--accent);
+      background: rgba(15, 23, 42, 1);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 0.55rem 1.1rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-decoration: none;
+      transition: all 0.18s ease-out;
+      background: transparent;
+      color: var(--text);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      color: #0b1120;
+      font-weight: 600;
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.45);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+      box-shadow: 0 16px 40px rgba(56, 189, 248, 0.55);
+    }
+
+    .btn-ghost {
+      border-color: rgba(148, 163, 184, 0.5);
+      color: var(--muted);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .btn-ghost:hover {
+      color: var(--text);
+      border-color: rgba(148, 163, 184, 0.9);
+      background: rgba(15, 23, 42, 1);
+    }
+
+    .btn span.icon {
+      font-size: 1rem;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 1rem 1rem 0.9rem;
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.85);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-tag {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--muted);
+    }
+
+    .card-tag--accent {
+      border-color: rgba(56, 189, 248, 0.7);
+      color: var(--accent);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px dashed rgba(55, 65, 81, 0.9);
+      margin: 0.6rem 0 0.7rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      margin-top: 0.4rem;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem;
+    }
+
+    @media (max-width: 600px) {
+      .field-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    label span.required {
+      color: var(--danger);
+      margin-left: 0.15rem;
+    }
+
+    input, select, textarea {
+      border-radius: 8px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text);
+      padding: 0.5rem 0.55rem;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.16s ease-out, box-shadow 0.16s ease-out, background 0.16s ease-out;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(148, 163, 184, 0.7);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(56, 189, 248, 0.9);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+      background: rgba(15, 23, 42, 1);
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .helper-text {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .inline-note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: -0.2rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+      font-size: 0.75rem;
+    }
+
+    .status-pill {
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .status-pill--success {
+      border-color: rgba(74, 222, 128, 0.7);
+      color: var(--success);
+      background: rgba(22, 163, 74, 0.08);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--muted);
+    }
+
+    .status-dot--success {
+      background: var(--success);
+      box-shadow: 0 0 10px rgba(74, 222, 128, 0.9);
+    }
+
+    .status-dot--pending {
+      background: #facc15;
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.9);
+    }
+
+    .repo-section {
+      margin-top: 1.4rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 900px) {
+      .repo-section {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .repo-list,
+    .meta-list {
+      list-style: none;
+      padding: 0;
+      margin: 0.25rem 0 0.4rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .repo-list li,
+    .meta-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.2rem 0;
+    }
+
+    .repo-name {
+      color: var(--text);
+    }
+
+    .repo-meta,
+    .meta-label {
+      opacity: 0.85;
+    }
+
+    .meta-value {
+      color: var(--text);
+      font-size: 0.8rem;
+    }
+
+    aside {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1rem 1.25rem 1.5rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+      background: radial-gradient(circle at bottom, rgba(15, 23, 42, 0.9), #020617);
+    }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans">
-    <div class="max-w-4xl mx-auto py-12 px-4">
-        <div class="bg-white rounded-xl shadow-sm p-8 mb-8 border border-slate-200">
-            <h1 class="text-3xl font-bold text-indigo-900">Richard's Credit Authority</h1>
-            <p class="text-slate-500 mt-2">Verified Identity: RickCreator87 | Tier 0 Founder</p>
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <div class="brand-logo"></div>
+        <div class="brand-text">
+          <span>Richard's Credit Authority</span>
+          <span>Personal credit · audit-safe · off-chain</span>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-indigo-500">
-                <p class="text-xs font-semibold text-slate-500 uppercase">Total Capacity</p>
-                <p class="text-2xl font-bold">$100,000.00</p>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-emerald-500">
-                <p class="text-xs font-semibold text-slate-500 uppercase">Active Loans</p>
-                <p class="text-2xl font-bold">$3,000.00</p>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-amber-500">
-                <p class="text-xs font-semibold text-slate-500 uppercase">Remaining</p>
-                <p class="text-2xl font-bold">$97,000.00</p>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="p-6 border-b border-slate-100">
-                <h2 class="text-xl font-bold">Active Ledger</h2>
-            </div>
-            <table class="w-full text-left">
-                <thead class="bg-slate-50">
-                    <tr>
-                        <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">ID</th>
-                        <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Borrower</th>
-                        <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Amount</th>
-                        <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Status</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100">
-                    <tr>
-                        <td class="px-6 py-4 font-mono text-sm">GD-PROD-2026-001</td>
-                        <td class="px-6 py-4">GitDigital Products LLC</td>
-                        <td class="px-6 py-4 font-semibold">$3,000.00</td>
-                        <td class="px-6 py-4"><span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase">Active</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <p class="mt-8 text-center text-slate-400 text-sm">
-            This dashboard is powered by the <strong>richards-credit-authority</strong> repository.<br>
-            All data is validated via automated CI/CD governance scripts.
-        </p>
+      </div>
+      <nav class="nav-links">
+        <a href="#loan-application">Loan application</a>
+        <a href="#kyc-intake">KYC intake</a>
+        <a href="#governance">Governance</a>
+        <a href="#repo-map">Repo map</a>
+      </nav>
     </div>
-</body>
-</html>
+  </header>
+
+  <main>
+    <!-- LEFT: Hero + Loan Application + Repo/Governance -->
+    <section>
+      <section class="hero-card" id="loan-application">
+        <div class="pill-row">
+          <span class="pill pill--accent">Founders & trusted contributors only</span>
+          <span class="pill">Off-chain · audit-ready · tax-first</span>
+        </div>
+
+        <div class="hero-grid">
+          <div>
+            <h1>Apply for a credit-backed founder loan</h1>
+            <p>
+              This form routes your request through Richard's personal credit authority layer.
+              Every field is designed to be machine-readable, audit-safe, and ready for downstream
+              automation across ledgers, agreements, and disbursement workflows.
+            </p>
+
+            <div class="hero-badges">
+              <div class="badge-card">
+                <div class="badge-label">Authority scope</div>
+                <div class="badge-value">Personal credit → Org loan</div>
+                <div class="badge-chip-row">
+                  <span class="badge-chip badge-chip--accent">Tax-first</span>
+                  <span class="badge-chip">Dual-founder approvals</span>
+                </div>
+              </div>
+              <div class="badge-card">
+                <div class="badge-label">Workflow status</div>
+                <div class="badge-value">Manual review → Automation-ready</div>
+                <div class="badge-chip-row">
+                  <span class="badge-chip">KYC validator</span>
+                  <span class="badge-chip">Loaner ledger</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-actions">
+              <button type="submit" form="loan-form" class="btn btn-primary">
+                <span class="icon">⬆️</span>
+                <span>Submit loan request</span>
+              </button>
+              <a href="#governance" class="btn btn-ghost">
+                <span class="icon">📜</span>
+                <span>View governance rules</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Loan application</h3>
+              <span class="card-tag card-tag--accent">Form · draft</span>
+            </div>
+            <p class="helper-text">
+              Static draft only. Later, wire this to your KYC validator, loaner ledger, and agreement generator.
+            </p>
+            <hr class="divider" />
+
+            <form id="loan-form">
+              <!-- Identity -->
+              <div class="field-group">
+                <label for="full-name">
+                  Full legal name
+                  <span class="required">*</span>
+                </label>
+                <input
+                  id="full-name"
+                  name="full_name"
+                  type="text"
+                  placeholder="First, middle, last"
+                  required
+                />
+              </div>
+
+              <div class="field-row">
+                <div class="field-group">
+                  <label for="email">
+                    Email
+                    <span class="required">*</span>
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    required
+                  />
+                </div>
+                <div class="field-group">
+                  <label for="phone">
+                    Phone
+                    <span class="required">*</span>
+                  </label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="+1 (___) ___‑____"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div class="field-group">
+                  <label for="dob">
+                    Date of birth
+                    <span class="required">*</span>
+                  </label>
+                  <input id="dob" name="dob" type="date" required />
+                </div>
+                <div class="field-group">
+                  <label for="country">
+                    Country of residence
+                    <span class="required">*</span>
+                  </label>
+                  <input
+                    id="country"
+                    name="country"
+                    type="text"
+                    placeholder="United States"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Address -->
+              <div class="field-group">
+                <label for="address-line1">
+                  Residential address
+                  <span class="required">*</span>
+                </label>
+                <input
+                  id="address-line1"
+                  name="address_line1"
+                  type="text"
+                  placeholder="Street address"
+                  required
+                />
+                <input
+                  id="address-line2"
+                  name="address_line2"
+                  type="text"
+                  placeholder="Apartment, suite, etc. (optional)"
+                />
+              </div>
+
+              <div class="field-row">
+                <div class="field-group">
+                  <label for="city">
+                    City
+                    <span class="required">*</span>
+                  </label>
+                  <input id="city" name="city" type="text" required />
+                </div>
+                <div class="field-group">
+                  <label for="state">
+                    State / region
+                    <span class="required">*</span>
+                  </label>
+                  <input id="state" name="state" type="text" required />
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div class="field-group">
+                  <label for="postal-code">
+                    Postal code
+                    <span class="required">*</span>
+                  </label>
+                  <input id="postal-code" name="postal_code" type="text" required />
+                </div>
+                <div class="field-group">
+                  <label for="citizenship">
+                    Citizenship
+                    <span class="required">*</span>
+                  </label>
+                  <input
+                    id="citizenship"
+                    name="citizenship"
+                    type="text"
+                    placeholder="e.g., US citizen"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Loan details -->
+              <hr class="divider" />
+
+              <div class="field-row">
+                <div class="field-group">
+                  <label for="loan-amount">
+                    Requested loan amount (USD)
+                    <span class="required">*</span>
+                  </label>
+                  <input
+                    id="loan-amount"
+                    name="loan_amount"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    placeholder="e.g., 5000"
+                    required
+                  />
+                </div>
+                <div class="field-group">
+                  <label for="loan-purpose">
+                    Primary purpose
+                    <span class="required">*</span>
+                  </label>
+                  <select id="loan-purpose" name="loan_purpose" required>
+                    <option value="">Select purpose</option>
+                    <option value="founder-expenses">Founder expenses (GitDigital)</option>
+                    <option value="operational-bridge">Operational bridge</option>
+                    <option value="equipment">Equipment 
