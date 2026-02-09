@@ -1,0 +1,51 @@
+id: workflow-new-loan
+name: New Loan Creation
+description: >
+  Standard workflow for creating a new loan under Richard's personal credit authority.
+
+triggers:
+  - manual_request
+  - api:new_loan_request
+
+steps:
+  - id: validate_identity
+    type: validation
+    requires_authority_level: standard
+    validations:
+      - jurisdiction_match
+
+  - id: validate_capacity
+    type: validation
+    requires_authority_level: standard
+    validations:
+      - capacity_check
+
+  - id: validate_tax
+    type: validation
+    requires_authority_level: elevated
+    validations:
+      - afr_minimum_interest
+      - tax_compliance
+
+  - id: draft_agreement
+    type: integration
+    requires_authority_level: standard
+    integrations:
+      - agreements
+
+  - id: approval
+    type: approval
+    requires_authority_level: elevated
+    validations: []
+
+  - id: ledger_entry
+    type: integration
+    requires_authority_level: elevated
+    integrations:
+      - ledger
+
+  - id: finalize
+    type: integration
+    requires_authority_level: automation
+    integrations:
+      - vault
