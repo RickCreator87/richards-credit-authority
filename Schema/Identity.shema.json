@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Identity",
+  "type": "object",
+  "required": ["id", "legal_name", "jurisdiction", "tax", "roles", "verification"],
+  "properties": {
+    "id": { "type": "string" },
+    "legal_name": { "type": "string" },
+    "username": { "type": "string" },
+    "jurisdiction": {
+      "type": "object",
+      "required": ["country", "state"],
+      "properties": {
+        "country": { "type": "string" },
+        "state": { "type": "string" }
+      }
+    },
+    "tax": {
+      "type": "object",
+      "required": ["id_type"],
+      "properties": {
+        "id_type": { "type": "string", "enum": ["SSN", "ITIN", "EIN"] },
+        "last4": { "type": "string", "pattern": "^[0-9]{4}$" }
+      }
+    },
+    "roles": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "verification": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "type": "string", "enum": ["pending", "verified", "revoked"] },
+        "methods": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "metadata": { "type": "object" }
+  }
+}
