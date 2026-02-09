@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Workflow",
+  "type": "object",
+  "required": ["id", "name", "steps"],
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "triggers": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+"type": {
+  "type": "string",
+  "enum": ["validation", "integration", "approval", "notification"]
+}
+          "requires_authority_level": { "type": "string" },
+          "validations": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "integrations": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+"metadata": {
+  "type": "object",
+  "properties": {
+    "createdBy": { "type": "string" },
+    "version": { "type": "string" },
+    "description": { "type": "string" }
+  },
+  "additionalProperties": true
+}
+  }
+}
