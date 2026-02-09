@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Loan application · Richard's Credit Authority</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="brand">
+      <div class="brand-logo"></div>
+      <div class="brand-text">
+        <span>Richard's Credit Authority</span>
+        <span>Loan intake · thresholds · governance</span>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="loan-application.html">Loan application</a>
+      <a href="thresholds.html">Thresholds</a>
+      <a href="governance.html">Governance</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="grid-2">
+    <!-- LEFT: Loan form -->
+    <section class="card" id="gitdigital">
+      <div class="card-header">
+        <h2>GitDigital Products loan</h2>
+        <span class="card-tag card-tag--accent">Preferred lane</span>
+      </div>
+      <div class="pill-row">
+        <span class="pill pill--accent">GitDigital Products</span>
+        <span class="pill">Milestone-aligned</span>
+        <span class="pill">Dual-founder approval</span>
+      </div>
+      <p>
+        Use this lane when the loan is directly tied to GitDigital Products milestones, infrastructure,
+        or contributor support.
+      </p>
+
+      <form id="loan-form-gitdigital">
+        <div class="field-group">
+          <label for="loan-type-gdp">
+            Loan type
+            <span class="required">*</span>
+          </label>
+          <select id="loan-type-gdp" name="loan_type" required>
+            <option value="">Select type</option>
+            <option value="gitdigital-products">GitDigital Products loan</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="loan-amount-gdp">
+              Requested amount (USD)
+              <span class="required">*</span>
+            </label>
+            <input id="loan-amount-gdp" name="loan_amount" type="number" placeholder="e.g., 5000" required />
+          </div>
+          <div class="field-group">
+            <label for="milestone">
+              Linked milestone
+              <span class="required">*</span>
+            </label>
+            <input id="milestone" name="milestone" type="text" placeholder="e.g., KYC validator v1 launch" required />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="purpose-gdp">
+            Purpose details
+            <span class="required">*</span>
+          </label>
+          <textarea
+            id="purpose-gdp"
+            name="purpose"
+            placeholder="Describe how this loan advances GitDigital Products and how it will be repaid."
+            required
+          ></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="repayment-source-gdp">
+              Primary repayment source
+              <span class="required">*</span>
+            </label>
+            <input
+              id="repayment-source-gdp"
+              name="repayment_source"
+              type="text"
+              placeholder="e.g., future GitDigital revenue"
+              required
+            />
+          </div>
+          <div class="field-group">
+            <label for="horizon-gdp">
+              Target repayment horizon
+              <span class="required">*</span>
+            </label>
+            <select id="horizon-gdp" name="repayment_horizon" required>
+              <option value="">Select horizon</option>
+              <option value="0-3">0–3 months</option>
+              <option value="3-6">3–6 months</option>
+              <option value="6-12">6–12 months</option>
+              <option value="12-plus">12+ months</option>
+            </select>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="field-group">
+          <label for="full-name-gdp">
+            Full legal name
+            <span class="required">*</span>
+          </label>
+          <input id="full-name-gdp" name="full_name" type="text" placeholder="First, middle, last" required />
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="email-gdp">
+              Email
+              <span class="required">*</span>
+            </label>
+            <input id="email-gdp" name="email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="field-group">
+            <label for="relationship-gdp">
+              Relationship to GitDigital
+              <span class="required">*</span>
+            </label>
+            <select id="relationship-gdp" name="relationship" required>
+              <option value="">Select relationship</option>
+              <option value="founder">Founder / co-owner</option>
+              <option value="core-contributor">Core contributor</option>
+              <option value="sponsored-contributor">Sponsored contributor</option>
+              <option value="advisor">Advisor</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="kyc-status-gdp">
+            KYC status
+            <span class="required">*</span>
+          </label>
+          <select id="kyc-status-gdp" name="kyc_status" required>
+            <option value="">Select status</option>
+            <option value="not-started">Not started</option>
+            <option value="in-progress">In progress</option>
+            <option value="verified">Completed & verified</option>
+          </select>
+          <p class="helper-text">
+            In production, this will be populated by the KYC validator and locked from manual edits.
+          </p>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="field-group">
+          <label>Attestations <span class="required">*</span></label>
+          <p class="helper-text">
+            By submitting, you confirm that the information is accurate and understand this is a
+            draft intake. The actual loan will be governed by a signed agreement.
+          </p>
+          <div class="field-row">
+            <div class="field-group">
+              <label for="attest-accuracy-gdp">
+                <input id="attest-accuracy-gdp" name="attest_accuracy" type="checkbox" required />
+                &nbsp; I attest that the information is accurate.
+              </label>
+            </div>
+            <div class="field-group">
+              <label for="attest-governance-gdp">
+                <input id="attest-governance-gdp" name="attest_governance" type="checkbox" required />
+                &nbsp; I understand this will be subject to governance review.
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 0.8rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <button type="submit" class="btn btn-primary">
+            <span class="icon">⬆️</span>
+            <span>Submit GitDigital loan</span>
+          </button>
+          <button type="reset" class="btn btn-ghost">
+            <span class="icon">🧹</span>
+            <span>Clear form</span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- RIGHT: Threshold + preview -->
+    <aside class="card">
+      <div class="card-header">
+        <h2>Threshold & preview</h2>
+        <span class="card-tag">Static logic</span>
+      </div>
+      <p class="helper-text">
+        This panel shows how a GitDigital Products loan interacts with your authority thresholds.
+        Values are static placeholders for now.
+      </p>
+
+      <ul class="meta-list">
+        <li>
+          <span class="meta-label">Total personal capacity</span>
+          <span class="meta-value">$25,000</span>
+        </li>
+        <li>
+          <span class="meta-label">Current utilization</span>
+          <span class="meta-value">$12,500 (50%)</span>
+        </li>
+        <li>
+          <span class="meta-label">Projected loan</span>
+          <span class="meta-value">$5,000</span>
+        </li>
+        <li>
+          <span class="meta-label">Projected utilization</span>
+          <span class="meta-value">$17,500 (70%)</span>
+        </li>
+      </ul>
+
+      <div class="threshold-bar">
+        <div class="threshold-fill" style="width: 70%;"></div>
+      </div>
+
+      <div class="status-row">
+        <span class="status-pill status-pill--success">
+          <span class="status-dot status-dot--success"></span>
+          Below hard cap
+        </span>
+        <span class="status-pill status-pill--warning">
+          <span class="status-dot status-dot--warning"></span>
+          Soft warning at 80%+
+        </span>
+      </div>
+
+      <hr class="divider" />
+
+      <h3>Loan preview (human-readable)</h3>
+      <p class="helper-text">
+        This is what a generated summary might look like before you sign the actual agreement.
+      </p>
+      <p>
+        <strong>Example:</strong> “Richard extends a GitDigital Products loan of $5,000 to support
+        KYC validator v1 launch, with a target repayment horizon of 6–12 months, repaid from future
+        GitDigital revenue. This loan remains within the personal credit authority thresholds and
+        requires dual-founder approval before disbursement.”
+      </p>
+
+      <div class="helper-text">
+        In automation, this preview would be generated from the JSON payload and attached to the agreement.
+      </div>
+    </aside>
+  </section>
+
+  <section class="card" id="generic" style="margin-top:1.5rem;">
+    <div class="card-header">
+      <h2>Generic founder loan lane</h2>
+      <span class="card-tag">Secondary lane</span>
+    </div>
+    <p class="helper-text">
+      Use this lane for non-GitDigital-specific loans (personal equipment, tax buffer, etc.). Fields
+      can mirror the GitDigital lane but route through different governance rules.
+    </p>
+    <p class="helper-text">
+      For now, this is just a placeholder description. You can clone the GitDigital form above and
+      adjust the labels, thresholds, and governance routing.
+    </p>
+  </section>
+</main>
+
+<footer>
+  Loan application UI for <strong>richards-credit-authority</strong>. Static only. Wire to APIs and ledger when ready.
+</footer>
+</body>
+                </html>
