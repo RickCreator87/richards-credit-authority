@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Governance · Richard's Credit Authority</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="brand">
+      <div class="brand-logo"></div>
+      <div class="brand-text">
+        <span>Richard's Credit Authority</span>
+        <span>Governance · approvals · rules</span>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="loan-application.html">Loan application</a>
+      <a href="thresholds.html">Thresholds</a>
+      <a href="governance.html">Governance</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <div class="card-header">
+      <h2>Governance rules</h2>
+      <span class="card-tag card-tag--accent">Policy</span>
+    </div>
+    <p>
+      This is the human-readable governance layer that your automation, CI checks, and agreements
+      should mirror exactly.
+    </p>
+    <ul class="meta-list">
+      <li>
+        <span class="meta-label">Tax separation</span>
+        <span class="meta-value">Personal vs. org flows never co-mingle.</span>
+      </li>
+      <li>
+        <span class="meta-label">Dual approvals</span>
+        <span class="meta-value">Richard + co-owner for any org-facing loan.</span>
+      </li>
+      <li>
+        <span class="meta-label">KYC requirement</span>
+        <span class="meta-value">Verified identity before any disbursement.</span>
+      </li>
+      <li>
+        <span class="meta-label">Ledger sync</span>
+        <span class="meta-value">No disbursement without a ledger entry.</span>
+      </li>
+      <li>
+        <span class="meta-label">Agreement binding</span>
+        <span class="meta-value">No funds move without a signed agreement.</span>
+      </li>
+    </ul>
+    <div class="helper-text">
+      Mirror this page in <code>docs/governance.md</code> and keep it in sync with your automation.
+    </div>
+  </section>
+</main>
+
+<footer>
+  Governance view for <strong>richards-credit-authority</strong>. Static only. Mirror in docs and CI.
+</footer>
+</body>
+</html>
