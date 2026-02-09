@@ -1,3 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Richard's Credit Authority · Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="brand">
+      <div class="brand-logo"></div>
+      <div class="brand-text">
+        <span>Richard's Credit Authority</span>
+        <span>Founder command center · audit-safe</span>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="loan-application.html">Loan application</a>
+      <a href="thresholds.html">Thresholds</a>
+      <a href="governance.html">Governance</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="grid-2">
+    <section class="card">
+      <div class="card-header">
+        <h2>Credit authority overview</h2>
+        <span class="card-tag card-tag--accent">Dashboard</span>
+      </div>
+      <div class="pill-row">
+        <span class="pill pill--accent">Tax-first</span>
+        <span class="pill">Dual-founder approvals</span>
+        <span class="pill">KYC required</span>
+      </div>
+      <p>
+        High-level view of how your personal credit authority is allocated across GitDigital Products
+        and other lanes. Treat this as the cockpit for all loan decisions.
+      </p>
+
+      <ul class="meta-list">
+        <li>
+          <span class="meta-label">Total personal capacity</span>
+          <span class="meta-value">$25,000</span>
+        </li>
+        <li>
+          <span class="meta-label">Allocated to GitDigital Products</span>
+          <span class="meta-value">$10,000</span>
+        </li>
+        <li>
+          <span class="meta-label">Other allocations</span>
+          <span class="meta-value">$2,500</span>
+        </li>
+        <li>
+          <span class="meta-label">Remaining capacity</span>
+          <span class="meta-value">$12,500</span>
+        </li>
+      </ul>
+
+      <div class="helper-text">
+        Static placeholders for now. In production, these values should be driven by your Loaner Ledger.
+      </div>
+
+      <hr class="divider" />
+
+      <h3>Utilization</h3>
+      <div class="threshold-bar">
+        <div class="threshold-fill" style="width: 50%;"></div>
+      </div>
+      <div class="status-row">
+        <span class="status-pill status-pill--success">
+          <span class="status-dot status-dot--success"></span>
+          50% utilization · healthy
+        </span>
+        <span class="status-pill status-pill--warning">
+          <span class="status-dot status-dot--warning"></span>
+          Soft alerts at 80%+
+        </span>
+      </div>
+    </section>
+
+    <aside class="card">
+      <div class="card-header">
+        <h2>Quick actions</h2>
+        <span class="card-tag">Founder shortcuts</span>
+      </div>
+      <p class="helper-text">
+        Use these lanes to keep every loan request aligned with thresholds, governance, and KYC.
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1rem;">
+        <a href="loan-application.html#gitdigital" class="btn btn-primary">
+          <span class="icon">📝</span>
+          <span>New GitDigital Products loan</span>
+        </a>
+        <a href="loan-application.html#generic" class="btn btn-ghost">
+          <span class="icon">💳</span>
+          <span>New generic founder loan</span>
+        </a>
+        <a href="thresholds.html" class="btn btn-ghost">
+          <span class="icon">📊</span>
+          <span>Review thresholds</span>
+        </a>
+        <a href="governance.html" class="btn btn-ghost">
+          <span class="icon">📜</span>
+          <span>Review governance rules</span>
+        </a>
+      </div>
+
+      <hr class="divider" />
+
+      <h3>Next loan preview (static)</h3>
+      <p class="helper-text">
+        Example of how a pending GitDigital Products loan might appear once wired to your backend.
+      </p>
+      <ul class="meta-list">
+        <li>
+          <span class="meta-label">Loan type</span>
+          <span class="meta-value">GitDigital Products</span>
+        </li>
+        <li>
+          <span class="meta-label">Requested amount</span>
+          <span class="meta-value">$5,000</span>
+        </li>
+        <li>
+          <span class="meta-label">Projected utilization</span>
+          <span class="meta-value">70% of personal capacity</span>
+        </li>
+        <li>
+          <span class="meta-label">Governance route</span>
+          <span class="meta-value">Dual-founder approval</span>
+        </li>
+      </ul>
+      <div class="helper-text">
+        In production, this panel would be populated from the last draft or a pending request.
+      </div>
+    </aside>
+  </section>
+</main>
+
+<footer>
+  Founder command center for <strong>richards-credit-authority</strong>. Static only. Wire to your services when ready.
+</footer>
+</body>
+</html>
+
+
+```
+---
 ```html
 <!DOCTYPE html>
 <html lang="en">
