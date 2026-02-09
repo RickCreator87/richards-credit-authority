@@ -1,0 +1,8 @@
+name: richard-loaner-ledger
+type: git_repo
+url: https://github.com/RickCreator87/richard-loaner-ledger
+contracts:
+  - id: create_loan_entry
+    description: Create a new principal + terms entry.
+  - id: update_payment
+    description: Record payment against existing loan.
