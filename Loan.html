@@ -1,0 +1,534 @@
+<!--
+NOTE FOR FUTURE YOU:
+This version includes:
+- Threshold display
+- GitDigital Products loan type
+- Authority capacity visualization
+- Threshold warnings (static)
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Richard's Credit Authority</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: #020617;
+      color: #e5e7eb;
+    }
+
+    header {
+      background: #0f172a;
+      border-bottom: 1px solid #1e293b;
+      padding: 1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 0.75rem;
+      font-weight: 600;
+    }
+
+    h1 { font-size: 1.9rem; }
+    h2 { font-size: 1rem; text-transform: uppercase; color: #94a3b8; }
+    h3 { font-size: 0.9rem; text-transform: uppercase; color: #94a3b8; }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: #0b1120;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 1.2rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    .field-group {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 0.25rem;
+    }
+
+    input, select, textarea {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 0.55rem;
+      color: #e5e7eb;
+      font-size: 0.9rem;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #38bdf8;
+      outline: none;
+      box-shadow: 0 0 0 1px #38bdf8;
+    }
+
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-right: 0.5rem;
+    }
+
+    .btn-primary {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    .threshold-bar {
+      height: 12px;
+      background: #1e293b;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+
+    .threshold-fill {
+      height: 100%;
+      background: #38bdf8;
+      width: 40%; /* static placeholder */
+    }
+
+    .warning {
+      color: #facc15;
+      font-size: 0.8rem;
+      margin-top: 0.4rem;
+    }
+
+    .danger {
+      color: #f87171;
+      font-size: 0.8rem;
+      margin-top: 0.4rem;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: #1e293b;
+      color: #94a3b8;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      margin-right: 0.3rem;
+    }
+
+    .pill-accent {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Richard's Credit Authority</h1>
+  <div class="pill pill-accent">Audit-Safe</div>
+  <div class="pill">Tax-First</div>
+  <div class="pill">Off-Chain</div>
+</header>
+
+<main>
+
+  <!-- LEFT SIDE: Loan Application -->
+  <section class="card">
+    <h2>Loan Application</h2>
+    <p>Submit a request through Richard’s personal credit authority layer. Thresholds and governance rules apply.</p>
+
+    <form>
+
+      <!-- Loan Type -->
+      <div class="field-group">
+        <label for="loan-type">Loan Type</label>
+        <select id="loan-type" name="loan_type" required>
+          <option value="">Select loan type</option>
+          <option value="gitdigital-products">GitDigital Products Loan</option>
+          <option value="founder-expense">Founder Expense Loan</option>
+          <option value="operational-bridge">Operational Bridge</option>
+          <option value="equipment">Equipment / Tools</option>
+          <option value="tax-buffer">Tax Buffer</option>
+        </select>
+      </div>
+
+      <!-- Loan Amount -->
+      <div class="field-group">
+        <label for="loan-amount">Requested Amount (USD)</label>
+        <input id="loan-amount" name="loan_amount" type="number" placeholder="e.g., 5000" required />
+        <div class="warning">Threshold check will run automatically in production.</div>
+      </div>
+
+      <!-- Purpose -->
+      <div class="field-group">
+        <label for="purpose">Purpose Details</label>
+        <textarea id="purpose" name="purpose" placeholder="Describe how funds will be used…" required></textarea>
+      </div>
+
+      <!-- Identity -->
+      <div class="field-group">
+        <label for="full-name">Full Legal Name</label>
+        <input id="full-name" name="full_name" type="text" required />
+      </div>
+
+      <div class="field-group">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required />
+      </div>
+
+      <!-- Attestation -->
+      <div class="field-group">
+        <label>
+          <input type="checkbox" required />
+          I attest that all information is accurate.
+        </label>
+      </div>
+
+      <button class="btn btn-primary" type="submit">Submit Loan Request</button>
+      <button class="btn" type="reset">Clear</button>
+
+    </form>
+  </section>
+
+  <!-- RIGHT SIDE: Thresholds + Governance -->
+  <aside>
+
+    <!-- Threshold Card -->
+    <section class="card">
+      <h2>Authority Thresholds</h2>
+
+      <p><strong>Total Personal Credit Capacity:</strong> $25,000</p>
+      <p><strong>Currently Allocated:</strong> $10,000</p>
+      <p><strong>Remaining Capacity:</strong> $15,000</p>
+
+      <div class="threshold-bar">
+        <div class="threshold-fill" style="width: 40%;"></div>
+      </div>
+
+      <div class="warning">You are below 50% utilization.</div>
+      <div class="danger" style="display:none;">Warning: Threshold exceeded!</div>
+    </section>
+
+    <!-- GitDigital Products Loan Rules -->
+    <section class="card">
+      <h2>GitDigital Products Loan</h2>
+      <p>This category is reserved for GitDigital Products operational needs, founder expenses, and milestone-driven development.</p>
+
+      <ul>
+        <li>Must align with GitDigital Products roadmap</li>
+        <li>Requires dual-founder approval</li>
+        <li>Must be logged in the Loaner Ledger</li>
+        <li>Agreement auto-generated upon approval</li>
+      </ul>
+    </section>
+
+    <!-- Governance -->
+    <section class="card">
+      <h2>Governance Rules</h2>
+      <ul>
+        <li>Tax separation enforced</li>
+        <li>KYC verification required</li>
+        <li>No disbursement without ledger entry</li>
+        <li>Dual approval for org-facing loans</li>
+      </ul>
+    </section>
+
+  </aside>
+
+</main>
+
+</body>
+</html>
+
+```html
+<!--
+NOTE FOR FUTURE YOU:
+This version includes:
+- Threshold display
+- GitDigital Products loan type
+- Authority capacity visualization
+- Threshold warnings (static)
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Richard's Credit Authority</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: #020617;
+      color: #e5e7eb;
+    }
+
+    header {
+      background: #0f172a;
+      border-bottom: 1px solid #1e293b;
+      padding: 1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 0.75rem;
+      font-weight: 600;
+    }
+
+    h1 { font-size: 1.9rem; }
+    h2 { font-size: 1rem; text-transform: uppercase; color: #94a3b8; }
+    h3 { font-size: 0.9rem; text-transform: uppercase; color: #94a3b8; }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: #0b1120;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 1.2rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    .field-group {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 0.25rem;
+    }
+
+    input, select, textarea {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 0.55rem;
+      color: #e5e7eb;
+      font-size: 0.9rem;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #38bdf8;
+      outline: none;
+      box-shadow: 0 0 0 1px #38bdf8;
+    }
+
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-right: 0.5rem;
+    }
+
+    .btn-primary {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    .threshold-bar {
+      height: 12px;
+      background: #1e293b;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+
+    .threshold-fill {
+      height: 100%;
+      background: #38bdf8;
+      width: 40%; /* static placeholder */
+    }
+
+    .warning {
+      color: #facc15;
+      font-size: 0.8rem;
+      margin-top: 0.4rem;
+    }
+
+    .danger {
+      color: #f87171;
+      font-size: 0.8rem;
+      margin-top: 0.4rem;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: #1e293b;
+      color: #94a3b8;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      margin-right: 0.3rem;
+    }
+
+    .pill-accent {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Richard's Credit Authority</h1>
+  <div class="pill pill-accent">Audit-Safe</div>
+  <div class="pill">Tax-First</div>
+  <div class="pill">Off-Chain</div>
+</header>
+
+<main>
+
+  <!-- LEFT SIDE: Loan Application -->
+  <section class="card">
+    <h2>Loan Application</h2>
+    <p>Submit a request through Richard’s personal credit authority layer. Thresholds and governance rules apply.</p>
+
+    <form>
+
+      <!-- Loan Type -->
+      <div class="field-group">
+        <label for="loan-type">Loan Type</label>
+        <select id="loan-type" name="loan_type" required>
+          <option value="">Select loan type</option>
+          <option value="gitdigital-products">GitDigital Products Loan</option>
+          <option value="founder-expense">Founder Expense Loan</option>
+          <option value="operational-bridge">Operational Bridge</option>
+          <option value="equipment">Equipment / Tools</option>
+          <option value="tax-buffer">Tax Buffer</option>
+        </select>
+      </div>
+
+      <!-- Loan Amount -->
+      <div class="field-group">
+        <label for="loan-amount">Requested Amount (USD)</label>
+        <input id="loan-amount" name="loan_amount" type="number" placeholder="e.g., 5000" required />
+        <div class="warning">Threshold check will run automatically in production.</div>
+      </div>
+
+      <!-- Purpose -->
+      <div class="field-group">
+        <label for="purpose">Purpose Details</label>
+        <textarea id="purpose" name="purpose" placeholder="Describe how funds will be used…" required></textarea>
+      </div>
+
+      <!-- Identity -->
+      <div class="field-group">
+        <label for="full-name">Full Legal Name</label>
+        <input id="full-name" name="full_name" type="text" required />
+      </div>
+
+      <div class="field-group">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required />
+      </div>
+
+      <!-- Attestation -->
+      <div class="field-group">
+        <label>
+          <input type="checkbox" required />
+          I attest that all information is accurate.
+        </label>
+      </div>
+
+      <button class="btn btn-primary" type="submit">Submit Loan Request</button>
+      <button class="btn" type="reset">Clear</button>
+
+    </form>
+  </section>
+
+  <!-- RIGHT SIDE: Thresholds + Governance -->
+  <aside>
+
+    <!-- Threshold Card -->
+    <section class="card">
+      <h2>Authority Thresholds</h2>
+
+      <p><strong>Total Personal Credit Capacity:</strong> $25,000</p>
+      <p><strong>Currently Allocated:</strong> $10,000</p>
+      <p><strong>Remaining Capacity:</strong> $15,000</p>
+
+      <div class="threshold-bar">
+        <div class="threshold-fill" style="width: 40%;"></div>
+      </div>
+
+      <div class="warning">You are below 50% utilization.</div>
+      <div class="danger" style="display:none;">Warning: Threshold exceeded!</div>
+    </section>
+
+    <!-- GitDigital Products Loan Rules -->
+    <section class="card">
+      <h2>GitDigital Products Loan</h2>
+      <p>This category is reserved for GitDigital Products operational needs, founder expenses, and milestone-driven development.</p>
+
+      <ul>
+        <li>Must align with GitDigital Products roadmap</li>
+        <li>Requires dual-founder approval</li>
+        <li>Must be logged in the Loaner Ledger</li>
+        <li>Agreement auto-generated upon approval</li>
+      </ul>
+    </section>
+
+    <!-- Governance -->
+    <section class="card">
+      <h2>Governance Rules</h2>
+      <ul>
+        <li>Tax separation enforced</li>
+        <li>KYC verification required</li>
+        <li>No disbursement without ledger entry</li>
+        <li>Dual approval for org-facing loans</li>
+      </ul>
+    </section>
+
+  </aside>
+
+</main>
+
+</body>
+</html>
+```
+
