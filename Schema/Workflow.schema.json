@@ -31,6 +31,14 @@
         }
       }
     },
-    "metadata": { "type": "object" }
+"metadata": {
+  "type": "object",
+  "properties": {
+    "createdBy": { "type": "string" },
+    "version": { "type": "string" },
+    "description": { "type": "string" }
+  },
+  "additionalProperties": true
+}
   }
 }
