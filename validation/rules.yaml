@@ -1,0 +1,44 @@
+version: 1
+rules:
+  - id: capacity_check
+    scope: lending
+    description: >
+      Ensure requested loan does not exceed max_single_loan, max_outstanding,
+      or max_annual_volume.
+    applies_to:
+      - workflows/new-loan
+      - workflows/update-ledger
+    severity: error
+
+  - id: afr_minimum_interest
+    scope: tax_federal
+    description: >
+      Ensure stated interest rate is >= applicable AFR for the term.
+    applies_to:
+      - workflows/new-loan
+    severity: error
+
+  - id: tax_compliance
+    scope: tax_combined
+    description: >
+      Ensure federal and Colorado state reporting requirements are satisfied.
+    applies_to:
+      - workflows/new-loan
+      - workflows/compliance-check
+    severity: error
+
+  - id: jurisdiction_match
+    scope: identity
+    description: >
+      Ensure lender jurisdiction matches configured tax rules.
+    applies_to:
+      - workflows/new-loan
+    severity: warning
+
+  - id: audit_log_required
+    scope: governance
+    description: >
+      Any change to authority limits must create an immutable audit log entry.
+    applies_to:
+      - authority/authority-map.yaml
+    severity: error
