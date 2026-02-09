@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Thresholds · Richard's Credit Authority</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="brand">
+      <div class="brand-logo"></div>
+      <div class="brand-text">
+        <span>Richard's Credit Authority</span>
+        <span>Threshold engine · tax-first</span>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="loan-application.html">Loan application</a>
+      <a href="thresholds.html">Thresholds</a>
+      <a href="governance.html">Governance</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="grid-2-balanced">
+    <section class="card">
+      <div class="card-header">
+        <h2>Personal credit thresholds</h2>
+        <span class="card-tag card-tag--accent">Authority</span>
+      </div>
+      <ul class="meta-list">
+        <li>
+          <span class="meta-label">Total capacity</span>
+          <span class="meta-value">$25,000</span>
+        </li>
+        <li>
+          <span class="meta-label">Soft warning</span>
+          <span class="meta-value">80% utilization</span>
+        </li>
+        <li>
+          <span class="meta-label">Hard cap</span>
+          <span class="meta-value">100% utilization</span>
+        </li>
+      </ul>
+      <div class="threshold-bar">
+        <div class="threshold-fill" style="width: 50%;"></div>
+      </div>
+      <div class="helper-text">
+        In automation, this page would be driven by a config file or on-chain/off-chain state.
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2>GitDigital Products allocation</h2>
+        <span class="card-tag">Org lane</span>
+      </div>
+      <ul class="meta-list">
+        <li>
+          <span class="meta-label">Max GitDigital allocation</span>
+          <span class="meta-value">$15,000</span>
+        </li>
+        <li>
+          <span class="meta-label">Current GitDigital usage</span>
+          <span class="meta-value">$10,000 (66%)</span>
+        </li>
+        <li>
+          <span class="meta-label">Remaining GitDigital capacity</span>
+          <span class="meta-value">$5,000</span>
+        </li>
+      </ul>
+      <div class="threshold-bar">
+        <div class="threshold-fill" style="width: 66%;"></div>
+      </div>
+      <div class="helper-text">
+        This is the lane your GitDigital Products loans will draw from.
+      </div>
+    </section>
+  </section>
+</main>
+
+<footer>
+  Threshold view for <strong>richards-credit-authority</strong>. Static only. Wire to ledger/config when ready.
+</footer>
+</body>
+</html>
