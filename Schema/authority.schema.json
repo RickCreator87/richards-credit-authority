@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LendingAuthority",
+  "type": "object",
+  "required": ["profile_id", "authority_level", "limits", "risk", "compliance"],
+  "properties": {
+    "profile_id": { "type": "string" },
+    "authority_level": {
+      "type": "string",
+      "enum": ["master", "elevated", "standard", "read-only", "automation"]
+    },
+    "limits": {
+      "type": "object",
+      "required": ["max_outstanding", "max_single_loan", "max_annual_volume"],
+      "properties": {
+        "max_outstanding": { "type": "number" },
+        "max_single_loan": { "type": "number" },
+        "max_annual_volume": { "type": "number" }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "required": ["tolerance"],
+      "properties": {
+        "tolerance": {
+          "type": "string",
+          "enum": ["conservative", "moderate_conservative", "moderate", "aggressive"]
+        }
+      }
+    },
+    "compliance": {
+      "type": "object",
+      "required": ["federal", "state"],
+      "properties": {
+        "federal": { "type": "array", "items": { "type": "string" } },
+        "state": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "integrations": { "type": "object" },
+    "metadata": { "type": "object" }
+  }
+}
