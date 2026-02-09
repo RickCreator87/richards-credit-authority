@@ -11,14 +11,10 @@
       "type": "array",
       "items": { "type": "string" }
     },
-    "steps": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["id", "type"],
-        "properties": {
-          "id": { "type": "string" },
-          "type": { "type": "string" },
+"type": {
+  "type": "string",
+  "enum": ["validation", "integration", "approval", "notification"]
+}
           "requires_authority_level": { "type": "string" },
           "validations": {
             "type": "array",
