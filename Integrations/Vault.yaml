@@ -1,0 +1,6 @@
+name: obsidian-governance-vault
+type: obsidian_vault
+path_hint: /vaults/governance
+contracts:
+  - id: sync_authority_snapshot
+  - id: sync_audit_log
