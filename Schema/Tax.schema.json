@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TaxRules",
+  "type": "object",
+  "required": ["jurisdiction", "rules"],
+  "properties": {
+    "jurisdiction": {
+      "type": "object",
+      "required": ["country", "scope"],
+      "properties": {
+        "country": { "type": "string" },
+"scope": {
+          "type": "string",
+          "enum": ["federal", "state", "local", "municipal"]
+        },
+      }
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "description", "category"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+"category": {
+            "type": "string",
+            "enum": ["deduction", "credit", "exemption", "rate", "threshold", "reporting"]
+          },
+          "references": { "type": "array", "items": { "type": "string" } },
+          "required_for": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}
