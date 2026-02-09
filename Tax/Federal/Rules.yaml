@@ -1,0 +1,18 @@
+jurisdiction:
+  country: US
+  scope: federal
+
+rules:
+  - id: interest_income_reporting
+    category: reporting
+    description: >
+      Interest received must be reported as income; 1099-INT may be required.
+    references:
+      - IRS Publication 550
+
+  - id: below_market_loans_7872
+    category: below_market_loans
+    description: >
+      Below-market loans may trigger imputed interest under IRC §7872.
+    references:
+      - IRC 7872
