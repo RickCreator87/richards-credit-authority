@@ -9,8 +9,10 @@
       "required": ["country", "scope"],
       "properties": {
         "country": { "type": "string" },
-        "scope": { "type": "string" },
-        "state": { "type": "string" }
+"scope": {
+          "type": "string",
+          "enum": ["federal", "state", "local", "municipal"]
+        },
       }
     },
     "rules": {
