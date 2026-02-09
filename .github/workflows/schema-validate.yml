@@ -1,0 +1,97 @@
+---
+
+.github/workflows/schema-validate.yml – CI for schema validation
+
+`yaml
+name: Validate loan-request schema
+
+on:
+  push:
+    paths:
+      - "schema/loan-request.json"
+      - ".github/workflows/schema-validate.yml"
+  pull_request:
+    paths:
+      - "schema/loan-request.json"
+
+jobs:
+  validate-schema:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install jsonschema
+
+      - name: Validate loan-request schema
+        run: |
+          python - << 'EOF'
+          import json
+          from jsonschema import Draft202012Validator
+
+          with open("schema/loan-request.json") as f:
+              schema = json.load(f)
+
+          Draft202012Validator.check_schema(schema)
+          print("loan-request.json is a valid JSON Schema.")
+          EOF
+
+
+```yml
+
+---
+
+.github/workflows/schema-validate.yml – CI for schema validation
+
+`yaml
+name: Validate loan-request schema
+
+on:
+  push:
+    paths:
+      - "schema/loan-request.json"
+      - ".github/workflows/schema-validate.yml"
+  pull_request:
+    paths:
+      - "schema/loan-request.json"
+
+jobs:
+  validate-schema:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install jsonschema
+
+      - name: Validate loan-request schema
+        run: |
+          python - << 'EOF'
+          import json
+          from jsonschema import Draft202012Validator
+
+          with open("schema/loan-request.json") as f:
+              schema = json.load(f)
+
+          Draft202012Validator.check_schema(schema)
+          print("loan-request.json is a valid JSON Schema.")
+          EOF
+```
