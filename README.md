@@ -1,3 +1,19 @@
+
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-pink)](https://github.com/sponsors/RickCreator87)
+## 💖 Sponsorship
+
+This project is maintained with care and long-term intent.
+
+If this repository saves you time, money, or headaches, consider supporting its development through GitHub Sponsors.
+
+Your support helps fund:
+- Maintenance and security updates  
+- Documentation and examples  
+- New features and experiments  
+
+👉 Sponsor here: https://github.com/sponsors/RickCreator87/richards-credit-authority
+
+
 # Richard's Credit Authority
 
 This repository defines the personal authority layer for Richard Duane Kindler.  
@@ -76,7 +92,7 @@ loaner_profile:
   agreements_repo: "richard-loaner-agreements"
   
   status: "active"
-  established: "2025-01-15"
+  established: "2026-01-15"
   last_reviewed: "2026-02-04"
 ```
 
