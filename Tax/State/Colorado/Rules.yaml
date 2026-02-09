@@ -1,0 +1,12 @@
+jurisdiction:
+  country: US
+  scope: state
+  state: CO
+
+rules:
+  - id: co_income_tax_rate
+    category: rate
+    description: >
+      Flat Colorado income tax rate applies to interest income.
+    references:
+      - Colorado Department of Revenue
