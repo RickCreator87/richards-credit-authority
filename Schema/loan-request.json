@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LoanRequest",
+  "type": "object",
+  "properties": {
+    "loan_type": {
+      "type": "string",
+      "enum": [
+        "gitdigital-products",
+        "founder-expense",
+        "operational-bridge",
+        "equipment",
+        "tax-buffer"
+      ]
+    },
+    "milestone": { "type": "string" },
+    "loan_amount": { "type": "number", "minimum": 0 },
+    "purpose": { "type": "string" },
+    "repayment_source": { "type": "string" },
+    "repayment_horizon": {
+      "type": "string",
+      "enum": ["0-3", "3-6", "6-12", "12-plus"]
+    },
+    "full_name": { "type": "string" },
+    "email": { "type": "string", "format": "email" },
+    "relationship": {
+      "type": "string",
+      "enum": ["founder", "core-contributor", "sponsored-contributor", "advisor"]
+    },
+    "kyc_status": {
+      "type": "string",
+      "enum": ["not-started", "in-progress", "verified"]
+    },
+    "attest_accuracy": { "type": "boolean" },
+    "attest_governance": { "type": "boolean" }
+  },
+  "required": [
+    "loan_type",
+    "loan_amount",
+    "purpose",
+    "repayment_source",
+    "repayment_horizon",
+    "full_name",
+    "email",
+    "relationship",
+    "kyc_status",
+    "attest_accuracy",
+    "attest_governance"
+  ]
+}
