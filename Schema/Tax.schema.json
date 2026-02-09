@@ -23,7 +23,10 @@
         "properties": {
           "id": { "type": "string" },
           "description": { "type": "string" },
-          "category": { "type": "string" },
+"category": {
+            "type": "string",
+            "enum": ["deduction", "credit", "exemption", "rate", "threshold", "reporting"]
+          },
           "references": { "type": "array", "items": { "type": "string" } },
           "required_for": { "type": "array", "items": { "type": "string" } }
         }
