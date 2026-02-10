@@ -1,3 +1,34 @@
+![Permissions](https://img.shields.io/badge/permissions-role--based-blue)
+![Access Logs](https://img.shields.io/badge/access-logged-lightgrey)
+![Tamper Resistance](https://img.shields.io/badge/tamper-resistant-darkred)
+
+![Workflow](https://img.shields.io/badge/workflows-automated-success)
+![CI/CD](https://img.shields.io/badge/CI/CD-ready-blue)
+![Validation](https://img.shields.io/badge/validation-rules%20enforced-yellow)
+![Event Driven](https://img.shields.io/badge/architecture-event--driven-informational)
+
+
+![KYC](https://img.shields.io/badge/KYC-supported-blueviolet)
+![AML](https://img.shields.io/badge/AML-aligned-critical)
+![Risk Controls](https://img.shields.io/badge/risk-controls%20active-orange)
+![Escrow Logic](https://img.shields.io/badge/fund%20release-two--stage-green)
+
+![Code of Conduct](https://img.shields.io/badge/code%20of%20conduct-adopted-blue)
+![Security Policy](https://img.shields.io/badge/security-policy%20defined-red)
+![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen)
+![Audit Ready](https://img.shields.io/badge/audit-ready-purple)
+
+
+![Status](https://img.shields.io/badge/status-active-success)
+![Governance](https://img.shields.io/badge/governance-enforced-blue)
+![Compliance](https://img.shields.io/badge/compliance-financial%20grade-important)
+![Automation](https://img.shields.io/badge/automation-enabled-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-black)
+
+![DAO Compatible](https://img.shields.io/badge/DAO-compatible-purple)
+![Smart Contracts](https://img.shields.io/badge/smart%20contracts-supported-black)
+![Proof of Contribution](https://img.shields.io/badge/proof--of--contribution-native-success)
+
 
 [![Sponsor](https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-pink)](https://github.com/sponsors/RickCreator87)
 ## 💖 Sponsorship
