@@ -1,3 +1,15 @@
+![Governance](https://img.shields.io/badge/Governance-Active-blue)
+![Compliance](https://img.shields.io/badge/Compliance-Solana%20Aligned-0a7)
+![Tax%20First](https://img.shields.io/badge/Tax%20First-Architecture%20Enforced-7952b3)
+![LLC](https://img.shields.io/badge/GitDigital-LLC-black)
+
+
+
+![Ecosystem](https://img.shields.io/badge/Ecosystem-GitDigital%20Products-ff9800)
+![Platform](https://img.shields.io/badge/Platform-Multi--Org%20Federated-673ab7)
+![Automation](https://img.shields.io/badge/Automation-Workflow%20Engine-03a9f4)
+![SDK](https://img.shields.io/badge/SDK-Developer%20First-4caf50)
+
 
 ![Security](https://img.shields.io/badge/Security-Audit%20Ready-ff5722)
 ![KYC](https://img.shields.io/badge/KYC-Validator%20Active-009688)
