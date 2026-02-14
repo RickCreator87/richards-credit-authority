@@ -1,0 +1,286 @@
+webhook/on-loan-created.json
+
+```json
+{
+  "webhook_id": "wh_loan_created_v1",
+  "event_type": "loan.created",
+  "version": "1.0.0",
+  "description": "Triggered when a new loan application is created in the system",
+  "trigger_conditions": {
+    "entity": "loan_application",
+    "action": "create",
+    "status": ["initialized", "submitted"]
+  },
+  "payload_schema": {
+    "type": "object",
+    "required": ["event_id", "timestamp", "loan"],
+    "properties": {
+      "event_id": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Unique identifier for this event instance"
+      },
+      "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "ISO 8601 timestamp when the event occurred"
+      },
+      "webhook_id": {
+        "type": "string",
+        "description": "Identifier for this webhook configuration"
+      },
+      "event_type": {
+        "type": "string",
+        "enum": ["loan.created"],
+        "description": "Type of event that triggered the webhook"
+      },
+      "loan": {
+        "type": "object",
+        "required": ["loan_id", "application_date", "borrower", "loan_terms"],
+        "properties": {
+          "loan_id": {
+            "type": "string",
+            "pattern": "^[A-Z0-9]{10,20}$",
+            "description": "Unique loan identifier"
+          },
+          "application_number": {
+            "type": "string",
+            "description": "Human-readable application number"
+          },
+          "application_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date application was submitted"
+          },
+          "submission_method": {
+            "type": "string",
+            "enum": ["online", "branch", "phone", "tpo", "mobile_app"],
+            "description": "Channel through which application was submitted"
+          },
+          "loan_officer": {
+            "type": "object",
+            "properties": {
+              "employee_id": { "type": "string" },
+              "name": { "type": "string" },
+              "nmls_id": { "type": "string" },
+              "branch_id": { "type": "string" },
+              "email": { "type": "string", "format": "email" }
+            }
+          },
+          "borrower": {
+            "type": "object",
+            "properties": {
+              "borrower_id": { "type": "string" },
+              "first_name": { "type": "string" },
+              "last_name": { "type": "string" },
+              "email": { "type": "string", "format": "email" },
+              "phone": { "type": "string" },
+              "is_existing_customer": { "type": "boolean" },
+              "credit_score_range": {
+                "type": "string",
+                "enum": ["excellent", "good", "fair", "poor"]
+              }
+            }
+          },
+          "co_borrowers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "borrower_id": { "type": "string" },
+                "relationship": { "type": "string" },
+                "first_name": { "type": "string" },
+                "last_name": { "type": "string" }
+              }
+            }
+          },
+          "loan_terms": {
+            "type": "object",
+            "properties": {
+              "loan_type": {
+                "type": "string",
+                "enum": ["conventional", "fha", "va", "usda", "jumbo", "heloc"]
+              },
+              "loan_purpose": {
+                "type": "string",
+                "enum": ["purchase", "refinance_rate_term", "refinance_cash_out", "construction", "home_equity"]
+              },
+              "occupancy": {
+                "type": "string",
+                "enum": ["primary", "secondary", "investment"]
+              },
+              "loan_amount": {
+                "type": "number",
+                "minimum": 0
+              },
+              "requested_amount": {
+                "type": "number",
+                "minimum": 0
+              },
+              "property_value": {
+                "type": "number",
+                "minimum": 0
+              },
+              "ltv": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "requested_term": { "type": "integer" },
+              "requested_rate": { "type": "number" },
+              "amortization_type": {
+                "type": "string",
+                "enum": ["fixed", "arm", "interest_only", "balloon"]
+              }
+            }
+          },
+          "property": {
+            "type": "object",
+            "properties": {
+              "property_id": { "type": "string" },
+              "address": {
+                "type": "object",
+                "properties": {
+                  "street": { "type": "string" },
+                  "city": { "type": "string" },
+                  "state": { "type": "string" },
+                  "zip_code": { "type": "string" },
+                  "county": { "type": "string" }
+                }
+              },
+              "property_type": {
+                "type": "string",
+                "enum": ["single_family", "condo", "townhouse", "multi_family", "manufactured", "commercial"]
+              },
+              "estimated_value": { "type": "number" }
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": ["application_received", "incomplete", "pending_documents", "submitted_to_processing"]
+          },
+          "workflow_stage": {
+            "type": "string",
+            "enum": ["intake", "processing", "underwriting", "closing", "funding"]
+          },
+          "assigned_to": {
+            "type": "object",
+            "properties": {
+              "processor_id": { "type": "string" },
+              "underwriter_id": { "type": "string" }
+            }
+          },
+          "timestamps": {
+            "type": "object",
+            "properties": {
+              "created_at": { "type": "string", "format": "date-time" },
+              "submitted_at": { "type": "string", "format": "date-time" },
+              "assigned_at": { "type": "string", "format": "date-time" }
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "source": { "type": "string" },
+              "campaign_id": { "type": "string" },
+              "referral_source": { "type": "string" },
+              "utm_parameters": { "type": "object" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": {
+    "authentication": {
+      "type": "hmac",
+      "header": "X-RCA-Signature",
+      "algorithm": "sha256",
+      "secret_rotation": "90_days"
+    },
+    "encryption": {
+      "in_transit": "tls_1_3",
+      "payload_encryption": "optional_aes256"
+    },
+    "ip_whitelist": [],
+    "retry_policy": {
+      "max_retries": 5,
+      "backoff_strategy": "exponential",
+      "initial_delay_ms": 1000,
+      "max_delay_ms": 60000
+    }
+  },
+  "delivery": {
+    "method": "https_post",
+    "content_type": "application/json",
+    "timeout_seconds": 30,
+    "expected_response_codes": [200, 201, 202],
+    "idempotency_key_header": "X-Idempotency-Key"
+  },
+  "filters": {
+    "loan_types": ["conventional", "fha", "va", "jumbo"],
+    "min_loan_amount": 50000,
+    "branches": [],
+    "loan_officers": []
+  },
+  "example_payload": {
+    "event_id": "550e8400-e29b-41d4-a716-446655440000",
+    "timestamp": "2024-01-15T14:30:00.000Z",
+    "webhook_id": "wh_loan_created_v1",
+    "event_type": "loan.created",
+    "loan": {
+      "loan_id": "LOAN2024001234",
+      "application_number": "APP-2024-001234",
+      "application_date": "2024-01-15",
+      "submission_method": "online",
+      "loan_officer": {
+        "employee_id": "EMP001",
+        "name": "Jane Smith",
+        "nmls_id": "123456",
+        "branch_id": "BR001",
+        "email": "jane.smith@rca.com"
+      },
+      "borrower": {
+        "borrower_id": "BOR123456",
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john.doe@email.com",
+        "phone": "555-123-4567",
+        "is_existing_customer": false,
+        "credit_score_range": "good"
+      },
+      "loan_terms": {
+        "loan_type": "conventional",
+        "loan_purpose": "purchase",
+        "occupancy": "primary",
+        "loan_amount": 400000,
+        "requested_amount": 400000,
+        "property_value": 500000,
+        "ltv": 0.80,
+        "requested_term": 360,
+        "amortization_type": "fixed"
+      },
+      "property": {
+        "property_id": "PROP789",
+        "address": {
+          "street": "123 Main Street",
+          "city": "Anytown",
+          "state": "NY",
+          "zip_code": "12345",
+          "county": "Anycounty"
+        },
+        "property_type": "single_family",
+        "estimated_value": 500000
+      },
+      "status": "application_received",
+      "workflow_stage": "intake",
+      "timestamps": {
+        "created_at": "2024-01-15T14:30:00.000Z",
+        "submitted_at": "2024-01-15T14:35:00.000Z"
+      }
+    }
+  }
+}
+```
+
+
