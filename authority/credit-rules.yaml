@@ -1,0 +1,129 @@
+File Contents
+
+authority/credit-rules.yaml
+
+```yaml
+# Richards Credit Authority - Credit Rules Specification
+# Version: 1.0.0
+# Last Updated: 2026-01-15
+# Authority Level: Critical
+
+schema_version: "1.0"
+authority_id: "RCA-CR-001"
+effective_date: "2026-01-01"
+review_cycle: "quarterly"
+
+credit_tiers:
+  tier_1_excellent:
+    score_range: [750, 850]
+    max_dti: 0.43
+    min_down_payment_pct: 0.05
+    max_loan_amount: 2000000
+    interest_rate_floor: 0.035
+    documentation_level: "streamlined"
+    
+  tier_2_good:
+    score_range: [670, 749]
+    max_dti: 0.41
+    min_down_payment_pct: 0.10
+    max_loan_amount: 1500000
+    interest_rate_floor: 0.045
+    documentation_level: "standard"
+    
+  tier_3_fair:
+    score_range: [580, 669]
+    max_dti: 0.38
+    min_down_payment_pct: 0.15
+    max_loan_amount: 750000
+    interest_rate_floor: 0.065
+    documentation_level: "enhanced"
+    
+  tier_4_poor:
+    score_range: [300, 579]
+    max_dti: 0.36
+    min_down_payment_pct: 0.25
+    max_loan_amount: 250000
+    interest_rate_floor: 0.095
+    documentation_level: "full"
+    manual_review_required: true
+
+loan_types:
+  conventional_fixed_30:
+    max_ltv: 0.97
+    min_credit_score: 620
+    allowed_tiers: ["tier_1_excellent", "tier_2_good", "tier_3_fair"]
+    
+  conventional_fixed_15:
+    max_ltv: 0.95
+    min_credit_score: 640
+    allowed_tiers: ["tier_1_excellent", "tier_2_good", "tier_3_fair"]
+    
+  jumbo:
+    max_ltv: 0.80
+    min_credit_score: 700
+    min_loan_amount: 726200
+    allowed_tiers: ["tier_1_excellent", "tier_2_good"]
+    reserve_requirements_months: 12
+    
+  fha:
+    max_ltv: 0.965
+    min_credit_score: 580
+    mortgage_insurance_required: true
+    allowed_tiers: ["tier_1_excellent", "tier_2_good", "tier_3_fair", "tier_4_poor"]
+    
+  va:
+    max_ltv: 1.00
+    min_credit_score: 580
+    funding_fee_required: true
+    allowed_tiers: ["tier_1_excellent", "tier_2_good", "tier_3_fair", "tier_4_poor"]
+    eligible_borrowers: ["veteran", "active_duty", "reservist", "surviving_spouse"]
+
+income_verification:
+  employed:
+    required_documents: ["w2_last_2_years", "pay_stubs_last_30_days", "employment_verification"]
+    calculation_method: "gross_monthly_average"
+    
+  self_employed:
+    required_documents: ["tax_returns_last_2_years", "ytd_profit_loss", "business_bank_statements_3_months"]
+    calculation_method: "adjusted_gross_income_average"
+    minimum_history_years: 2
+    
+  retired:
+    required_documents: ["social_security_award_letter", "pension_statements", "investment_account_statements"]
+    calculation_method: "guaranteed_income_plus_70pct_investment"
+
+prohibited_criteria:
+  - race
+  - color
+  - religion
+  - national_origin
+  - sex
+  - marital_status
+  - age
+  - receipt_of_public_income
+  - exercise_of_consumer_rights
+
+exceptions_committee:
+  authority_level: "senior_underwriter"
+  max_exception_amount: 50000
+  requires_documentation: true
+  review_period_days: 30
+
+automated_decision_thresholds:
+  auto_approve:
+    min_credit_score: 720
+    max_dti: 0.36
+    min_reserves_months: 6
+    max_ltv: 0.80
+    
+  manual_review:
+    min_credit_score: 580
+    max_dti: 0.43
+    min_reserves_months: 2
+    
+  auto_decline:
+    min_credit_score: 300
+    max_dti: 0.50
+    bankruptcy_history_months: 24
+    foreclosure_history_months: 36
+```
