@@ -1,0 +1,54 @@
+Lending Servicing Engine
+
+**Location**: `src/lending/`
+
+Manages loan products, payment processing, and delinquency workflows.
+
+#### Features
+- Configurable loan products (DSL)
+- Multiple amortization schedules
+- Interest calculation strategies
+- Automated payment processing
+- Delinquency state machine
+- Grace period management
+
+#### Loan Product DSL
+
+```yaml
+loan_product:
+  id: "prime-auto-36"
+  name: "Prime Auto Loan 36 Month"
+  category: "INSTALLMENT"
+  
+  terms:
+    min_amount: 5000
+    max_amount: 100000
+    min_term_months: 12
+    max_term_months: 84
+    currency: "USD"
+    
+  interest:
+    type: "FIXED"
+    base_rate: 0.0599
+    tiers:
+      - credit_score_range: [720, 850]
+        rate_adjustment: -0.015
+      - credit_score_range: [690, 719]
+        rate_adjustment: 0.0
+      - credit_score_range: [650, 689]
+        rate_adjustment: 0.025
+        
+  amortization:
+    type: "LEVEL_PAYMENT"
+    day_of_month: 1
+    grace_days: 15
+    
+  fees:
+    origination: 0.01
+    late_fee: 25.00
+    prepayment_penalty: 0.0
+    
+  risk:
+    max_dti: 0.43
+    min_credit_score: 650
+```

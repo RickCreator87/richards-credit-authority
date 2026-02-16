@@ -1,0 +1,22 @@
+
+docker-compose.yml
+```yml
+---
+
+docker-compose.yml
+
+`yaml
+version: "3.9"
+
+services:
+  credit-authority-api:
+    build: .
+    container_name: credit-authority-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/app/api
+      - ./schema:/app/schema
+    environment:
+      - ENV=dev
+```

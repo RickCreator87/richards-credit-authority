@@ -1,0 +1,29 @@
+ledger_metadata:
+  owner: "Richard Duane Kindler"
+  entity: "RickCreator87"
+  authority_ref: "richards-credit-authority"
+  last_updated: "2026-02-06"
+  currency: "USD"
+  compliance_tier: "Tier 0 (Founder Authority)"
+
+global_limits:
+  total_authorized_cap: 100000.00
+  single_loan_max: 50000.00
+  governance_jurisdiction: "Colorado, USA"
+
+active_loans:
+  - loan_id: "GD-PROD-2026-001"
+    borrower: "GitDigital Products LLC"
+    principal: 3000.00
+    interest_rate: 0.00
+    loan_type: "Founder-to-Product Business Loan"
+    purpose: "Initial formation, AI infrastructure, and domain registration"
+    status: "ACTIVE"
+    effective_date: "2026-02-01"
+    maturity_date: "2027-02-01"
+    tax_nexus: "Federal/Colorado"
+
+summary_totals:
+  total_outstanding_principal: 3000.00
+  remaining_lending_capacity: 97000.00
+  utilization_percentage: 3.0

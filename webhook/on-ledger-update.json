@@ -1,0 +1,626 @@
+
+
+webhook/on-ledger-update.json
+
+```json
+{
+  "webhook_id": "wh_ledger_update_v1",
+  "event_type": "ledger.updated",
+  "version": "1.0.0",
+  "description": "Triggered when a transaction is posted to the general ledger",
+  "trigger_conditions": {
+    "entity": "general_ledger_transaction",
+    "action": ["create", "update", "reverse"],
+    "status": ["posted", "pending", "reversed"]
+  },
+  "payload_schema": {
+    "type": "object",
+    "required": ["event_id", "timestamp", "ledger_entry"],
+    "properties": {
+      "event_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "timestamp": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "webhook_id": {
+        "type": "string"
+      },
+      "event_type": {
+        "type": "string",
+        "enum": ["ledger.updated"]
+      },
+      "ledger_entry": {
+        "type": "object",
+        "required": ["entry_id", "journal_id", "posting_date", "entries"],
+        "properties": {
+          "entry_id": {
+            "type": "string",
+            "description": "Unique identifier for this ledger entry"
+          },
+          "journal_id": {
+            "type": "string",
+            "description": "Journal batch identifier"
+          },
+          "reference_number": {
+            "type": "string",
+            "description": "Source document reference"
+          },
+          "source_system": {
+            "type": "string",
+            "enum": ["LOAN_ORIGINATION", "LOAN_SERVICING", "PAYMENTS", "GENERAL_LEDGER", "ADJUSTMENT"]
+          },
+          "posting_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "effective_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "fiscal_period": {
+            "type": "string",
+            "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+            "description": "YYYY-MM format"
+          },
+          "transaction_type": {
+            "type": "string",
+            "enum": [
+              "PRINCIPAL_ADVANCE",
+              "PRINCIPAL_PAYMENT",
+              "INTEREST_ACCRUAL",
+              "INTEREST_PAYMENT",
+              "FEE_ACCRUAL",
+              "FEE_PAYMENT",
+              "CHARGE_OFF",
+              "RECOVERY",
+              "ADJUSTMENT",
+              "RECLASSIFICATION",
+              "REVERSAL"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["posted", "pending", "reversed", "reversing"]
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "entries": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": ["account_code", "debit_amount", "credit_amount"],
+              "properties": {
+                "line_id": {
+                  "type": "string"
+                },
+                "account_code": {
+                  "type": "string",
+                  "pattern": "^\\d{4}$",
+                  "description": "GL account number from chart of accounts"
+                },
+                "account_name": {
+                  "type": "string"
+                },
+                "debit_amount": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "credit_amount": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "description": {
+                  "type": "string"
+                },
+                "dimensions": {
+                  "type": "object",
+                  "properties": {
+                    "loan_id": {
+                      "type": "string"
+                    },
+                    "borrower_id": {
+                      "type": "string"
+                    },
+                    "branch_id": {
+                      "type": "string"
+                    },
+                    "department": {
+                      "type": "string"
+                    },
+                    "product_line": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "related_loan": {
+            "type": "object",
+            "properties": {
+              "loan_id": {
+                "type": "string"
+              },
+              "loan_type": {
+                "type": "string"
+              },
+              "borrower_name": {
+                "type": "string"
+              }
+            }
+          },
+          "amounts": {
+            "type": "object",
+            "properties": {
+              "total_debits": {
+                "type": "number"
+              },
+              "total_credits": {
+                "type": "number"
+              },
+              "net_amount": {
+                "type": "number"
+              },
+              "currency": {
+                "type": "string",
+                "default": "USD"
+              }
+            }
+          },
+          "audit": {
+            "type": "object",
+            "properties": {
+              "created_by": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "approved_by": {
+                "type": "string"
+              },
+              "approved_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "source_ip": {
+                "type": "string"
+              },
+              "session_id": {
+                "type": "string"
+              }
+            }
+          },
+          "reversal_info": {
+            "type": "object",
+            "properties": {
+              "is_reversal": {
+                "type": "boolean"
+              },
+              "reversed_entry_id": {
+                "type": "string"
+              },
+              "reversal_reason": {
+                "type": "string"
+              },
+              "reversal_date": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": {
+    "authentication": {
+      "type": "hmac",
+      "header": "X-RCA-Signature",
+      "algorithm": "sha256"
+    },
+    "encryption": {
+      "in_transit": "tls_1_3"
+    },
+    "retry_policy": {
+      "max_retries": 5,
+      "backoff_strategy": "exponential"
+    }
+  },
+  "delivery": {
+    "method": "https_post",
+    "content_type": "application/json",
+    "timeout_seconds": 30
+  },
+  "filters": {
+    "account_codes": [],
+    "transaction_types": [],
+    "min_amount": 0
+  },
+  "example_payload": {
+    "event_id": "660f9511-f3ac-52e5-b827-557766551111",
+    "timestamp": "2024-01-15T10:30:00.000Z",
+    "webhook_id": "wh_ledger_update_v1",
+    "event_type": "ledger.updated",
+    "ledger_entry": {
+      "entry_id": "JE-20240115-001234",
+      "journal_id": "JNL-2024-001",
+      "reference_number": "TXN-789456",
+      "source_system": "LOAN_SERVICING",
+      "posting_date": "2024-01-15",
+      "effective_date": "2024-01-15",
+      "fiscal_period": "2024-01",
+      "transaction_type": "PRINCIPAL_PAYMENT",
+      "status": "posted",
+      "description": "Monthly principal payment - Loan LOAN-001",
+      "entries": [
+        {
+          "line_id": "L1",
+          "account_code": "1010",
+          "account_name": "Operating Cash",
+          "debit_amount": 1500.00,
+          "credit_amount": 0,
+          "description": "Principal payment received",
+          "dimensions": {
+            "loan_id": "LOAN-001",
+            "branch_id": "BR001"
+          }
+        },
+        {
+          "line_id": "L2",
+          "account_code": "1100",
+          "account_name": "Loans Receivable",
+          "debit_amount": 0,
+          "credit_amount": 1500.00,
+          "description": "Principal reduction",
+          "dimensions": {
+            "loan_id": "LOAN-001",
+            "branch_id": "BR001"
+          }
+        }
+      ],
+      "related_loan": {
+        "loan_id": "LOAN-001",
+        "loan_type": "conventional_fixed_30",
+        "borrower_name": "John Doe"
+      },
+      "amounts": {
+        "total_debits": 1500.00,
+        "total_credits": 1500.00,
+        "net_amount": 0,
+        "currency": "USD"
+      },
+      "audit": {
+        "created_by": "system",
+        "created_at": "2024-01-15T10:30:00.000Z",
+        "source_ip": "10.0.1.100"
+      }
+    }
+  }
+}
+```
+
+
+***
+
+
+webhook/on-tax-event.json
+
+```json
+{
+  "webhook_id": "wh_tax_event_v1",
+  "event_type": "tax.event",
+  "version": "1.0.0",
+  "description": "Triggered when a tax-relevant event occurs (1099 generation, withholding, etc.)",
+  "trigger_conditions": {
+    "entity": "tax_event",
+    "action": ["1099_generated", "1098_generated", "withholding_applied", "backup_withholding_triggered", "tax_report_filed"],
+    "status": ["completed", "pending", "failed"]
+  },
+  "payload_schema": {
+    "type": "object",
+    "required": ["event_id", "timestamp", "tax_event"],
+    "properties": {
+      "event_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "timestamp": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "webhook_id": {
+        "type": "string"
+      },
+      "event_type": {
+        "type": "string",
+        "enum": ["tax.event"]
+      },
+      "tax_event": {
+        "type": "object",
+        "required": ["event_category", "tax_year", "status"],
+        "properties": {
+          "event_category": {
+            "type": "string",
+            "enum": [
+              "1099_INT_GENERATED",
+              "1099_C_GENERATED",
+              "1098_GENERATED",
+              "1098_E_GENERATED",
+              "1042_S_GENERATED",
+              "W9_RECEIVED",
+              "W8_RECEIVED",
+              "BACKUP_WITHHOLDING_APPLIED",
+              "BACKUP_WITHHOLDING_REMOVED",
+              "TAX_REPORT_FILED",
+              "TAX_AMENDMENT_FILED",
+              "B_NOTICE_RECEIVED",
+              "TIN_MISMATCH",
+              "WITHHOLDING_DEPOSIT",
+              "QUARTERLY_RETURN_FILED"
+            ]
+          },
+          "tax_year": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "reporting_period": {
+            "type": "string",
+            "pattern": "^Q[1-4]$",
+            "description": "Quarter for quarterly filings"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "completed", "failed", "corrected"]
+          },
+          "form_details": {
+            "type": "object",
+            "properties": {
+              "form_type": {
+                "type": "string",
+                "enum": ["1099-INT", "1099-C", "1098", "1098-E", "1042-S", "1096"]
+              },
+              "form_id": {
+                "type": "string"
+              },
+              "recipient": {
+                "type": "object",
+                "properties": {
+                  "recipient_id": {
+                    "type": "string"
+                  },
+                  "tin": {
+                    "type": "string",
+                    "pattern": "^\\d{3}-?\\d{2}-?\\d{4}$"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "street": { "type": "string" },
+                      "city": { "type": "string" },
+                      "state": { "type": "string" },
+                      "zip_code": { "type": "string" }
+                    }
+                  },
+                  "recipient_type": {
+                    "type": "string",
+                    "enum": ["individual", "business", "foreign", "estate"]
+                  }
+                }
+              },
+              "amounts": {
+                "type": "object",
+                "properties": {
+                  "box1_interest_income": { "type": "number" },
+                  "box2_early_withdrawal_penalty": { "type": "number" },
+                  "box3_us_savings_bond_interest": { "type": "number" },
+                  "box4_federal_tax_withheld": { "type": "number" },
+                  "box5_investment_expenses": { "type": "number" },
+                  "box6_foreign_tax_paid": { "type": "number" },
+                  "box8_tax_exempt_interest": { "type": "number" },
+                  "total_amount": { "type": "number" }
+                }
+              },
+              "filing_info": {
+                "type": "object",
+                "properties": {
+                  "filing_method": {
+                    "type": "string",
+                    "enum": ["efile", "paper"]
+                  },
+                  "filing_date": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "irs_acknowledgment": {
+                    "type": "string"
+                  },
+                  "state_filed": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "withholding_details": {
+            "type": "object",
+            "properties": {
+              "withholding_type": {
+                "type": "string",
+                "enum": ["backup_withholding", "federal_tax", "state_tax", "foreign_tax"]
+              },
+              "withholding_rate": {
+                "type": "number"
+              },
+              "withholding_amount": {
+                "type": "number"
+              },
+              "base_amount": {
+                "type": "number"
+              },
+              "reason_code": {
+                "type": "string"
+              },
+              "b_notice_received_date": {
+                "type": "string",
+                "format": "date"
+              },
+              "tin_verification_status": {
+                "type": "string",
+                "enum": ["verified", "mismatch", "pending", "exempt"]
+              }
+            }
+          },
+          "correction_info": {
+            "type": "object",
+            "properties": {
+              "is_correction": {
+                "type": "boolean"
+              },
+              "corrected_form_id": {
+                "type": "string"
+              },
+              "correction_reason": {
+                "type": "string"
+              },
+              "original_amounts": {
+                "type": "object"
+              },
+              "corrected_amounts": {
+                "type": "object"
+              }
+            }
+          },
+          "compliance_flags": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "flag_type": {
+                  "type": "string",
+                  "enum": ["tin_mismatch", "b_notice_pending", "foreign_person", "exempt_payee", "reporting_threshold"]
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": ["low", "medium", "high"]
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "audit_trail": {
+            "type": "object",
+            "properties": {
+              "generated_by": {
+                "type": "string"
+              },
+              "generated_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "reviewed_by": {
+                "type": "string"
+              },
+              "reviewed_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "approved_by": {
+                "type": "string"
+              },
+              "approved_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": {
+    "authentication": {
+      "type": "hmac",
+      "header": "X-RCA-Signature",
+      "algorithm": "sha256"
+    },
+    "encryption": {
+      "in_transit": "tls_1_3",
+      "sensitive_fields": ["recipient.tin"]
+    },
+    "retry_policy": {
+      "max_retries": 5
+    }
+  },
+  "delivery": {
+    "method": "https_post",
+    "content_type": "application/json",
+    "timeout_seconds": 30
+  },
+  "filters": {
+    "event_categories": [],
+    "tax_years": [],
+    "min_amount": 0
+  },
+  "example_payload": {
+    "event_id": "770a0622-g4bd-63f6-c938-668877662222",
+    "timestamp": "2024-01-31T15:00:00.000Z",
+    "webhook_id": "wh_tax_event_v1",
+    "event_type": "tax.event",
+    "tax_event": {
+      "event_category": "1099_INT_GENERATED",
+      "tax_year": 2023,
+      "status": "completed",
+      "form_details": {
+        "form_type": "1099-INT",
+        "form_id": "1099INT-2023-BOR123456",
+        "recipient": {
+          "recipient_id": "BOR123456",
+          "tin": "123-45-6789",
+          "name": "John Doe",
+          "address": {
+            "street": "123 Main Street",
+            "city": "Anytown",
+            "state": "NY",
+            "zip_code": "12345"
+          },
+          "recipient_type": "individual"
+        },
+        "amounts": {
+          "box1_interest_income": 2500.00,
+          "box4_federal_tax_withheld": 0,
+          "total_amount": 2500.00
+        },
+        "filing_info": {
+          "filing_method": "efile",
+          "filing_date": "2024-01-31",
+          "state_filed": ["NY", "CA"]
+        }
+      },
+      "audit_trail": {
+        "generated_by": "system",
+        "generated_at": "2024-01-31T15:00:00.000Z",
+        "reviewed_by": "tax_analyst_001",
+        "reviewed_at": "2024-01-31T16:00:00.000Z"
+      }
+    }
+  }
+}
+```
+
+
+

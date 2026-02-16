@@ -1,0 +1,245 @@
+permission/policy-map.yaml
+
+```yaml
+# Richards Credit Authority - Policy Mapping
+# Maps roles to actions with contextual rules
+# Version: 1.0.0
+
+schema_version: "1.0"
+last_updated: "2026-01-15"
+
+policy_mappings:
+
+  # System Administrator
+  - role: "ROLE_SYS_ADMIN"
+    action: "ACT_SYS_CONFIG"
+    effect: "allow"
+    conditions:
+      - time_based: "business_hours"
+      - change_management_ticket: "required"
+      
+  - role: "ROLE_SYS_ADMIN"
+    action: "ACT_USER_MGMT"
+    effect: "allow"
+    conditions:
+      - cannot_modify: ["ROLE_SYS_ADMIN", "ROLE_CRO"]
+      - audit_trail: "required"
+
+  # Chief Risk Officer
+  - role: "ROLE_CRO"
+    action: "ACT_LOAN_APPROVE"
+    effect: "allow"
+    resource: "all"
+    conditions:
+      - amount_limit: "unlimited"
+      - exception_authority: true
+      
+  - role: "ROLE_CRO"
+    action: "ACT_EXC_APP"
+    effect: "allow"
+    resource: "all"
+    conditions:
+      - documentation_required: true
+      - board_notification: "if_material"
+
+  # Chief Underwriter
+  - role: "ROLE_CU"
+    action: "ACT_LOAN_APPROVE"
+    effect: "allow"
+    resource: "all"
+    conditions:
+      - amount_limit: "unlimited"
+      - dual_verification: "if_over_1500000"
+      
+  - role: "ROLE_CU"
+    action: "ACT_EXC_APP"
+    effect: "allow"
+    resource: "all"
+    conditions:
+      - monthly_limit: 20
+      - quarterly_reporting: true
+
+  # Senior Underwriter
+  - role: "ROLE_SU"
+    action: "ACT_LOAN_APPROVE"
+    effect: "allow"
+    resource: "all"
+    conditions:
+      - amount_limit: 2000000
+      - dual_verification: "if_over_1500000"
+      
+  - role: "ROLE_SU"
+    action: "ACT_EXC_REQ"
+    effect: "allow"
+    resource: "all"
+    conditions:
+      - monthly_limit: 10
+      - requires_documentation: true
+
+  # Standard Underwriter
+  - role: "ROLE_UW"
+    action: "ACT_LOAN_APPROVE"
+    effect: "allow"
+    resource: "all"
+    conditions:
+      - amount_limit: 500000
+      - tier_restrictions: ["tier_1_excellent", "tier_2_good", "tier_3_fair"]
+      
+  - role: "ROLE_UW"
+    action: "ACT_LOAN_DENY"
+    effect: "allow"
+    resource: "all"
+    conditions:
+      - amount_limit: 500000
+      - adverse_action_notice: "required"
+
+  # Junior Underwriter
+  - role: "ROLE_JUW"
+    action: "ACT_LOAN_APPROVE"
+    effect: "allow"
+    resource: "all"
+    conditions:
+      - amount_limit: 250000
+      - supervisor_review: "required"
+      - no_exceptions: true
+
+  # Loan Officer
+  - role: "ROLE_LO"
+    action: "ACT_APP_CREATE"
+    effect: "allow"
+    resource: "own_pipeline"
+    
+  - role: "ROLE_LO"
+    action: "ACT_DOC_COLLECT"
+    effect: "allow"
+    resource: "own_applications"
+    
+  - role: "ROLE_LO"
+    action: "ACT_LOAN_APPROVE"
+    effect: "deny"
+    justification: "Separation of duties - cannot approve own loans"
+
+  # Loan Processor
+  - role: "ROLE_LP"
+    action: "ACT_DOC_VERIFY"
+    effect: "allow"
+    resource: "assigned_files"
+    conditions:
+      - completeness_only: true
+      - no_underwriting: true
+
+  # Quality Control
+  - role: "ROLE_QC"
+    action: "ACT_LOAN_APPROVE"
+    effect: "deny"
+    justification: "Independence requirement"
+    
+  - role: "ROLE_QC"
+    action: "ACT_DOC_VERIFY"
+    effect: "allow"
+    resource: "audit_sample"
+    conditions:
+      - post_close_only: true
+      - random_selection: true
+
+  # Compliance Officer
+  - role: "ROLE_COMPLIANCE"
+    action: "ACT_HMDA"
+    effect: "allow"
+    resource: "all"
+    conditions:
+      - annual_reporting: true
+      - data_integrity: "must_maintain"
+      
+  - role: "ROLE_COMPLIANCE"
+    action: "ACT_FL_MON"
+    effect: "allow"
+    resource: "all"
+    conditions:
+      - quarterly_analysis: true
+      - disparate_impact_testing: true
+
+  # IT Security
+  - role: "ROLE_IT_SEC"
+    action: "ACT_SYS_CONFIG"
+    effect: "allow"
+    resource: "security_settings"
+    conditions:
+      - change_approval: "CIO"
+      - security_impact_assessment: "required"
+
+  # Auditor
+  - role: "ROLE_AUDITOR"
+    action: "ACT_DATA_EXPORT"
+    effect: "allow"
+    resource: "all"
+    conditions:
+      - read_only: true
+      - time_limited: "engagement_period"
+      - encryption: "required"
+
+  # Customer Service
+  - role: "ROLE_CSR"
+    action: "ACT_PAY_PROC"
+    effect: "allow"
+    resource: "servicing_portfolio"
+    conditions:
+      - amount_limit: 50000
+      - supervisor_override: "if_exception"
+
+attribute_based_rules:
+  - name: "time_based_restrictions"
+    description: "Restrict high-risk actions to business hours"
+    applies_to_actions:
+      - "ACT_WIRE_INIT"
+      - "ACT_ESCROW_DISB"
+      - "ACT_LOAN_APPROVE"
+    conditions:
+      allowed_hours:
+        start: "07:00"
+        end: "19:00"
+        timezone: "America/New_York"
+      weekend_allowed: false
+      holiday_allowed: false
+    exception_process: "VP_APPROVAL_REQUIRED"
+
+  - name: "separation_of_duties"
+    description: "Prevent same-user approval chains"
+    applies_to_actions:
+      - "ACT_LOAN_APPROVE"
+      - "ACT_EXC_APP"
+    conditions:
+      cannot_approve_own: true
+      cannot_approve_subordinate: "if_direct_report"
+      rotation_required: "quarterly"
+
+  - name: "amount_thresholds"
+    description: "Dynamic limits based on loan amount"
+    applies_to_actions:
+      - "ACT_LOAN_APPROVE"
+    thresholds:
+      - max: 250000
+        role: "ROLE_JUW"
+      - max: 500000
+        role: "ROLE_UW"
+      - max: 2000000
+        role: "ROLE_SU"
+      - max: 999999999
+        role: "ROLE_CU"
+
+emergency_procedures:
+  emergency_access:
+    description: "Break-glass procedures for critical situations"
+    activation:
+      - incident_declared: "CRO_or_above"
+      - documentation: "required_within_24h"
+      - board_notification: "required_within_48h"
+    allowed_actions:
+      - "ACT_SYS_CONFIG"
+      - "ACT_LOAN_APPROVE"
+      - "ACT_WIRE_INIT"
+    restrictions:
+      - dual_control: "still_required"
+      - audit_trail: "enhanced"
+      - automatic_revocation: "72_hours"
+```

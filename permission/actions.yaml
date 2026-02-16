@@ -1,0 +1,320 @@
+permission/actions.yaml
+
+```yaml
+# Richards Credit Authority - Action Definitions
+# Version: 1.0.0
+# Defines all granular actions within the system
+
+schema_version: "1.0"
+system: "richards-credit-authority"
+last_updated: "2026-01-15"
+
+actions:
+  # System Actions
+  system_configure:
+    action_id: "ACT_SYS_CONFIG"
+    description: "Modify system configuration and settings"
+    risk_level: "critical"
+    audit_level: "comprehensive"
+    requires_approval: true
+    
+  system_audit:
+    action_id: "ACT_SYS_AUDIT"
+    description: "View system audit logs and security events"
+    risk_level: "high"
+    audit_level: "standard"
+    
+  user_manage:
+    action_id: "ACT_USER_MGMT"
+    description: "Create, modify, or deactivate user accounts"
+    risk_level: "high"
+    audit_level: "comprehensive"
+    
+  role_manage:
+    action_id: "ACT_ROLE_MGMT"
+    description: "Create or modify role definitions"
+    risk_level: "critical"
+    audit_level: "comprehensive"
+    requires_approval: true
+
+  # Loan Origination Actions
+  application_create:
+    action_id: "ACT_APP_CREATE"
+    description: "Create new loan application"
+    risk_level: "low"
+    audit_level: "standard"
+    
+  application_modify:
+    action_id: "ACT_APP_MOD"
+    description: "Modify existing loan application"
+    risk_level: "medium"
+    audit_level: "standard"
+    
+  application_submit:
+    action_id: "ACT_APP_SUBMIT"
+    description: "Submit application for underwriting"
+    risk_level: "medium"
+    audit_level: "standard"
+    
+  application_withdraw:
+    action_id: "ACT_APP_WITHDRAW"
+    description: "Withdraw loan application"
+    risk_level: "medium"
+    audit_level: "comprehensive"
+
+  # Credit Decision Actions
+  loan_approve:
+    action_id: "ACT_LOAN_APPROVE"
+    description: "Approve loan application"
+    risk_level: "critical"
+    audit_level: "comprehensive"
+    requires_dual_control: true
+    amount_thresholds:
+      - limit: 250000
+        requires: "junior_underwriter"
+      - limit: 500000
+        requires: "underwriter"
+      - limit: 2000000
+        requires: "senior_underwriter"
+      - limit: 999999999
+        requires: "chief_underwriter"
+        
+  loan_deny:
+    action_id: "ACT_LOAN_DENY"
+    description: "Deny loan application"
+    risk_level: "high"
+    audit_level: "comprehensive"
+    requires_reason: true
+    
+  loan_condition:
+    action_id: "ACT_LOAN_COND"
+    description: "Issue conditions for loan approval"
+    risk_level: "medium"
+    audit_level: "standard"
+    
+  loan_suspense:
+    action_id: "ACT_LOAN_SUSP"
+    description: "Place loan in suspense pending information"
+    risk_level: "low"
+    audit_level: "standard"
+
+  # Document Management Actions
+  document_collect:
+    action_id: "ACT_DOC_COLLECT"
+    description: "Collect documents from borrower"
+    risk_level: "low"
+    audit_level: "minimal"
+    
+  document_verify:
+    action_id: "ACT_DOC_VERIFY"
+    description: "Verify document authenticity and completeness"
+    risk_level: "medium"
+    audit_level: "standard"
+    
+  document_upload:
+    action_id: "ACT_DOC_UPLOAD"
+    description: "Upload document to system"
+    risk_level: "low"
+    audit_level: "standard"
+    virus_scan: true
+    
+  document_delete:
+    action_id: "ACT_DOC_DELETE"
+    description: "Delete document from system"
+    risk_level: "high"
+    audit_level: "comprehensive"
+    requires_approval: true
+    retention_override: false
+
+  # Financial Actions
+  wire_initiate:
+    action_id: "ACT_WIRE_INIT"
+    description: "Initiate wire transfer"
+    risk_level: "critical"
+    audit_level: "comprehensive"
+    requires_dual_control: true
+    amount_thresholds:
+      - limit: 100000
+        requires: "operations_supervisor"
+      - limit: 999999999
+        requires: "treasury_manager"
+        
+  escrow_disburse:
+    action_id: "ACT_ESCROW_DISB"
+    description: "Disburse escrow funds"
+    risk_level: "high"
+    audit_level: "comprehensive"
+    requires_dual_control: true
+    
+  fee_modify:
+    action_id: "ACT_FEE_MOD"
+    description: "Modify loan fees or charges"
+    risk_level: "high"
+    audit_level: "comprehensive"
+    requires_approval: true
+
+  # Data Actions
+  data_export:
+    action_id: "ACT_DATA_EXPORT"
+    description: "Export data from system"
+    risk_level: "high"
+    audit_level: "comprehensive"
+    encryption_required: true
+    watermark: true
+    
+  data_import:
+    action_id: "ACT_DATA_IMPORT"
+    description: "Import data into system"
+    risk_level: "high"
+    audit_level: "comprehensive"
+    validation_required: true
+    
+  pii_access:
+    action_id: "ACT_PII_ACCESS"
+    description: "Access personally identifiable information"
+    risk_level: "high"
+    audit_level: "comprehensive"
+    masking_default: true
+    
+  credit_report_access:
+    action_id: "ACT_CREDIT_RPT"
+    description: "Access credit report"
+    risk_level: "high"
+    audit_level: "comprehensive"
+    permissible_purpose_required: true
+    borrower_authorization_required: true
+
+  # Reporting Actions
+  report_generate:
+    action_id: "ACT_RPT_GEN"
+    description: "Generate standard report"
+    risk_level: "low"
+    audit_level: "minimal"
+    
+  report_custom:
+    action_id: "ACT_RPT_CUST"
+    description: "Create custom report"
+    risk_level: "medium"
+    audit_level: "standard"
+    
+  regulatory_report:
+    action_id: "ACT_RPT_REG"
+    description: "Generate regulatory report"
+    risk_level: "high"
+    audit_level: "comprehensive"
+    certification_required: true
+
+  # Exception Actions
+  exception_request:
+    action_id: "ACT_EXC_REQ"
+    description: "Request policy exception"
+    risk_level: "medium"
+    audit_level: "comprehensive"
+    justification_required: true
+    
+  exception_approve:
+    action_id: "ACT_EXC_APP"
+    description: "Approve policy exception"
+    risk_level: "critical"
+    audit_level: "comprehensive"
+    requires_approval: true
+    next_level_up: true
+    
+  exception_track:
+    action_id: "ACT_EXC_TRACK"
+    description: "View exception tracking"
+    risk_level: "low"
+    audit_level: "standard"
+
+  # Compliance Actions
+  hmda_report:
+    action_id: "ACT_HMDA"
+    description: "Access HMDA data"
+    risk_level: "high"
+    audit_level: "comprehensive"
+    
+  fair_lending_monitor:
+    action_id: "ACT_FL_MON"
+    description: "Monitor fair lending metrics"
+    risk_level: "high"
+    audit_level: "standard"
+    
+  complaint_investigate:
+    action_id: "ACT_COMP_INV"
+    description: "Investigate consumer complaint"
+    risk_level: "high"
+    audit_level: "comprehensive"
+    
+  examination_manage:
+    action_id: "ACT_EXAM_MGMT"
+    description: "Manage regulatory examination"
+    risk_level: "high"
+    audit_level: "comprehensive"
+
+  # Servicing Actions
+  payment_process:
+    action_id: "ACT_PAY_PROC"
+    description: "Process loan payment"
+    risk_level: "medium"
+    audit_level: "standard"
+    
+  escrow_analyze:
+    action_id: "ACT_ESC_ANAL"
+    description: "Perform escrow analysis"
+    risk_level: "medium"
+    audit_level: "standard"
+    
+  modification_process:
+    action_id: "ACT_MOD_PROC"
+    description: "Process loan modification"
+    risk_level: "high"
+    audit_level: "comprehensive"
+    
+  foreclosure_initiate:
+    action_id: "ACT_FOR_INIT"
+    description: "Initiate foreclosure proceedings"
+    risk_level: "critical"
+    audit_level: "comprehensive"
+    legal_review_required: true
+
+action_groups:
+  read_only:
+    actions:
+      - report_generate
+      - data_read
+      - status_view
+    characteristics:
+      no_modification: true
+      audit_level: "minimal"
+      
+  standard_processing:
+    actions:
+      - application_create
+      - document_collect
+      - document_upload
+      - payment_process
+    characteristics:
+      daily_operations: true
+      approval_not_required: true
+      
+  high_risk_financial:
+    actions:
+      - loan_approve
+      - wire_initiate
+      - fee_modify
+      - foreclosure_initiate
+    characteristics:
+      dual_control: true
+      comprehensive_audit: true
+      amount_thresholds: true
+      
+  compliance_critical:
+    actions:
+      - hmda_report
+      - fair_lending_monitor
+      - examination_manage
+      - complaint_investigate
+    characteristics:
+      independence_required: true
+      regulatory_reporting: true
+```
