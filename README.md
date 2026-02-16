@@ -36,6 +36,105 @@
 
 # 💸 Funding Badge Wall
 
+A complete visual system representing all funding‑related signals across the GitDigital ecosystem.
+
+---
+
+## ☕ Micro‑Support
+| Badge | Meaning |
+|-------|---------|
+| ☕ | Bought me a coffee |
+| 💛 | One‑time supporter |
+| 🌟 | First‑time sponsor |
+
+---
+
+## ❤️ Recurring Support
+| Badge | Meaning |
+|-------|---------|
+| ❤️ | Monthly sponsor |
+| 💖 | Recurring sponsor (3+ months) |
+| 💎 | High‑tier recurring sponsor |
+
+---
+
+## 🧱 Foundation Support
+| Badge | Meaning |
+|-------|---------|
+| 🧱 | Foundation sponsor ($100+) |
+| 🏛️ | Institutional supporter |
+| 🛡️ | Governance‑aligned funder |
+
+---
+
+## 🚀 Growth & Expansion
+| Badge | Meaning |
+|-------|---------|
+| 🚀 | Ecosystem expansion supporter |
+| 🧩 | Feature/module funder |
+| 🔧 | Tooling funder |
+| 📚 | Documentation funder |
+
+---
+
+## 🌐 Ecosystem Alignment
+| Badge | Meaning |
+|-------|---------|
+| 🔱 | Solana‑aligned sponsor |
+| 🪙 | Crypto‑based supporter |
+| 🌉 | Cross‑ecosystem supporter |
+
+---
+
+## 🧰 Infrastructure Support
+| Badge | Meaning |
+|-------|---------|
+| 🖥️ | Hosting/infra supporter |
+| 🔐 | Security & compliance funder |
+| 🧪 | Testing & QA funder |
+| 🧬 | Research & development funder |
+
+---
+
+## 🎖️ Recognition & Awards
+| Badge | Meaning |
+|-------|---------|
+| 🥇 | Top sponsor |
+| 🥈 | Contributor sponsor |
+| 🥉 | Community sponsor |
+| 🏅 | Long‑term supporter |
+| 🎗️ | Mission donor |
+| 🪩 | Spotlight sponsor |
+
+---
+
+## 🔗 Funding Channels
+| Badge | Meaning |
+|-------|---------|
+| 🧾 | GitHub Sponsors |
+| ☕ | Buy Me a Coffee |
+| 💳 | Direct donation |
+| 🔗 | Custom funding link |
+
+---
+
+## 🤝 Community Support
+| Badge | Meaning |
+|-------|---------|
+| 🤝 | Community supporter |
+| 🙌 | Amplified the mission |
+| 📣 | Shared or promoted the project |
+
+<p align="center">
+  <strong>Support my work:</strong><br>
+  ☕ <a href="https://www.buymeacoffee.com/rickcreator87">Buy Me a Coffee</a> •
+  ❤️ <a href="https://github.com/sponsors/RickCreator87">GitHub Sponsors</a> •
+  💳 Direct Support Available
+</p>
+
+
+# 💸 Funding Badge Wall
+
 A visual overview of all funding‑related signals across the GitDigital ecosystem.
 
 ---
