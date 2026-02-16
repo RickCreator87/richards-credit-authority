@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Threshold Settings | Richard's Credit Authority</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-slate">
+    <div class="container py-4">
+        <h2>Monitoring Thresholds</h2>
+        <p class="text-muted">Define the parameters for automated system alerts.</p>
+        
+        <div class="card-group mt-3">
+            <div class="input-card">
+                <label>Credit Score Floor</label>
+                <input type="number" placeholder="620" class="gdp-input">
+                <span>Alert me if my score drops below this value.</span>
+            </div>
+            
+            <div class="input-card">
+                <label>Utilization Ceiling (%)</label>
+                <input type="range" min="0" max="100" class="gdp-slider">
+                <div class="flex-justify"><span>0%</span><span>100%</span></div>
+            </div>
+
+            <button class="btn-primary w-100">Update Monitoring Logic</button>
+        </div>
+    </div>
+</body>
+</html>
