@@ -24,13 +24,8 @@ def evaluate_application(application_json, governance_profile, kyc_record, curre
     if lane_rules.get('requiresupportinglinks') and not app['supporting_links']:
         return {"status": "under_review", "reason": "Missing supporting documentation."}
 
-    # 4. Approval Routing
-    required_approvers = []
-    for flow in rules['approval_flows']:
-        if requested >= flow['threshold']:
-            required_approvers = flow['requiredapprovers']
-    
-    if len(required_approvers) > 1:
+if len(required_approvers) > 0:
+        return {"status": "under_review", "approvers": required_approvers}
         return {"status": "under_review", "approvers": required_approvers}
 
     # 5. Success: Generate Loan & Ledger Objects
