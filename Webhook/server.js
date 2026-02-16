@@ -26,9 +26,10 @@ const server = http.createServer((req, res) => {
     }
 
     const event = req.headers["x-github-event"];
+    const safeEvent = String(event || "").replace(/[\r\n]/g, "");
     const payload = JSON.parse(body);
 
-    console.log(`🔔 GitHub event: ${event}`);
+    console.log(`🔔 GitHub event: ${safeEvent}`);
 
     if (event === "pull_request") {
       const action = payload.action;
