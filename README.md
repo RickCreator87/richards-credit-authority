@@ -34,6 +34,184 @@
 ![License](https://img.shields.io/badge/License-MIT-black)
 ![Ecosystem](https://img.shields.io/badge/Ecosystem-GitDigital%20Products-ff9800)
 
+# 💸 Funding Badge Wall
+
+A visual overview of all funding‑related signals across the GitDigital ecosystem.
+
+---
+
+## ☕ Small Supporters
+| Badge | Meaning |
+|-------|---------|
+| ☕ | Bought me a coffee |
+| 💛 | One‑time supporter |
+| 🌟 | First‑time sponsor |
+
+---
+
+## ❤️ Recurring Sponsors
+| Badge | Meaning |
+|-------|---------|
+| ❤️ | Monthly sponsor |
+| 💖 | Long‑term recurring sponsor (3+ months) |
+| 💎 | High‑tier recurring sponsor |
+
+---
+
+## 🧱 Foundation‑Level Support
+| Badge | Meaning |
+|-------|---------|
+| 🧱 | Foundation sponsor ($100+) |
+| 🏛️ | Institutional supporter |
+| 🛡️ | Governance‑aligned funder |
+
+---
+
+## 🚀 Growth & Expansion Support
+| Badge | Meaning |
+|-------|---------|
+| 🚀 | Supports ecosystem expansion |
+| 🧩 | Funds new modules or features |
+| 🔧 | Funds developer tooling |
+| 📚 | Funds documentation improvements |
+
+---
+
+## 🌐 Solana & Ecosystem Support
+| Badge | Meaning |
+|-------|---------|
+| 🔱 | Solana‑aligned sponsor |
+| 🪙 | Crypto‑based supporter |
+| 🌉 | Cross‑ecosystem supporter |
+
+---
+
+## 🎖️ Special Recognition
+| Badge | Meaning |
+|-------|---------|
+| 🥇 | Top monthly sponsor |
+| 🥈 | Top contributor sponsor |
+| 🥉 | Community sponsor |
+| 🏅 | Long‑term ecosystem supporter |
+| 🎗️ | Mission‑aligned donor |
+
+---
+
+## 🧾 Funding Channels
+| Badge | Meaning |
+|-------|---------|
+| 🧾 | GitHub Sponsors |
+| ☕ | Buy Me a Coffee |
+| 💳 | Direct donation |
+| 🔗 | Custom funding link |
+
+---
+
+## 🧑‍🤝‍🧑 Community Support
+| Badge | Meaning |
+|-------|---------|
+| 🤝 | Community supporter |
+| 🙌 | Helped amplify the mission |
+| 📣 | Shared or promoted the project |
+
+---
+
+## 🧰 Infrastructure Support
+| Badge | Meaning |
+|-------|---------|
+| 🖥️ | Funds server or hosting costs |
+| 🔐 | Funds security & compliance |
+| 🧪 | Funds testing & QA |
+| 🧬 | Funds research & development |
+
+---
+
+## 🪪 Identity & Recognition
+| Badge | Meaning |
+|-------|---------|
+| 🪪 | Verified sponsor |
+| 🏷️ | Named sponsor |
+| 🪩 | Spotlight sponsor |
+| 🎉 | Celebration milestone supporter |
+
+---
+
+## 🔗 Sponsor Links
+- GitHub Sponsors → https://github.com/sponsors/RickCreator87  
+- Buy Me a Coffee → https://www.buymeacoffee.com/rickcreator87
+
+
+# 💸 Funding Badges
+
+| Badge | Meaning |
+|-------|---------|
+| ☕ | Coffee supporter |
+| ❤️ | Monthly sponsor |
+| 💖 | Long‑term recurring sponsor |
+| 💎 | High‑tier sponsor |
+| 🧱 | Foundation sponsor |
+| 🏛️ | Institutional supporter |
+| 🔱 | Solana‑aligned supporter |
+| 🚀 | Growth supporter |
+| 🧾 | GitHub Sponsors |
+| 💳 | Direct donation |
+| 📣 | Community amplifier |
+| 🛡️ | Governance funder |
+
+# 💸 GitDigital Funding Badge Wall
+
+A structured, governance‑aligned badge system representing all funding signals across the GitDigital ecosystem.
+
+---
+
+## Tier 1 — Micro‑Support
+- ☕ Coffee Supporter  
+- 💛 One‑Time Donor  
+- 🌟 First‑Time Sponsor  
+
+## Tier 2 — Sustained Support
+- ❤️ Monthly Sponsor  
+- 💖 Recurring Sponsor (3+ months)  
+- 💎 High‑Tier Sponsor  
+
+## Tier 3 — Foundation Support
+- 🧱 Foundation Sponsor  
+- 🏛️ Institutional Supporter  
+- 🛡️ Governance‑Aligned Funder  
+
+## Tier 4 — Ecosystem Support
+- 🔱 Solana‑Aligned Sponsor  
+- 🪙 Crypto‑Based Supporter  
+- 🌉 Cross‑Ecosystem Supporter  
+
+## Tier 5 — Mission Expansion
+- 🚀 Growth Supporter  
+- 🧩 Feature Development Funder  
+- 📚 Documentation Funder  
+- 🔧 Tooling Funder  
+
+## Tier 6 — Infrastructure
+- 🖥️ Hosting Support  
+- 🔐 Security & Compliance Support  
+- 🧪 Testing & QA Support  
+- 🧬 Research & Development Support  
+
+## Tier 7 — Recognition
+- 🥇 Top Sponsor  
+- 🥈 Contributor Sponsor  
+- 🥉 Community Sponsor  
+- 🏅 Long‑Term Supporter  
+- 🎗️ Mission Donor  
+
+---
+
+## Funding Channels
+- 🧾 GitHub Sponsors  
+- ☕ Buy Me a Coffee  
+- 💳 Direct Donation  
+- 🔗 Custom Funding Link
+
+
 ## ❤️ Support This Project
 
 If you find this project valuable, consider supporting my work:
