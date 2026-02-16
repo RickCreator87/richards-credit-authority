@@ -1,3 +1,48 @@
+# 💸 Funding Badge Matrix
+
+| Tier | Badge | Meaning | Notes |
+|------|--------|---------|--------|
+| T1 | ☕ | Coffee Supporter | Entry‑level support |
+| T1 | 💛 | One‑time Supporter | Non‑recurring |
+| T1 | 🌟 | First‑time Sponsor | Welcome badge |
+| T2 | ❤️ | Monthly Sponsor | Recurring |
+| T2 | 💖 | Long‑term Sponsor | 3+ months |
+| T2 | 💎 | High‑Tier Sponsor | Premium recurring |
+| T3 | 🧱 | Foundation Sponsor | $100+ |
+| T3 | 🏛️ | Institutional Supporter | Org‑level |
+| T3 | 🛡️ | Governance Funder | Compliance & security |
+| T4 | 🚀 | Growth Supporter | Expansion funding |
+| T4 | 🧩 | Feature Funder | Module‑specific |
+| T4 | 🔧 | Tooling Funder | Developer tools |
+| T4 | 📚 | Documentation Funder | Docs & education |
+| T5 | 🔱 | Solana‑Aligned Sponsor | Ecosystem alignment |
+| T5 | 🪙 | Crypto Supporter | Crypto donations |
+| T5 | 🌉 | Cross‑Ecosystem Supporter | Multi‑chain |
+| T6 | 🖥️ | Infra Supporter | Hosting & servers |
+| T6 | 🔐 | Security Supporter | Compliance & audits |
+| T6 | 🧪 | QA Supporter | Testing |
+| T6 | 🧬 | R&D Supporter | Research |
+| T7 | 🥇 | Top Sponsor | Highest tier |
+| T7 | 🥈 | Contributor Sponsor | Funds contributors |
+| T7 | 🥉 | Community Sponsor | Community‑driven |
+| T7 | 🏅 | Long‑Term Supporter | Sustained |
+| T7 | 🎗️ | Mission Donor | Vision‑aligned |
+| T7 | 🪩 | Spotlight Sponsor | Highlighted |
+# Sponsor Tier Badges
+
+- **☕ Coffee Tier** — Micro‑support  
+- **❤️ Monthly Tier** — Recurring support  
+- **💎 Premium Tier** — High‑tier recurring  
+- **🧱 Foundation Tier** — $100+  
+- **🏛️ Institutional Tier** — Org‑level  
+- **🚀 Expansion Tier** — Growth funding  
+- **🔱 Solana Tier** — Ecosystem alignment  
+- **🖥️ Infrastructure Tier** — Hosting & security  
+- **🥇 Elite Tier** — Top sponsor
+
+- 
+
+
 ![Governance](https://img.shields.io/badge/Governance-Active-blue)
 ![Compliance](https://img.shields.io/badge/Compliance-Solana%20Aligned-0a7)
 ![Tax%20First](https://img.shields.io/badge/Tax%20First-Architecture%20Enforced-7952b3)
