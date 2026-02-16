@@ -34,10 +34,9 @@ jobs:
         env:
           KYC_PROVIDER_KEY: ${{ secrets.KYC_PROVIDER_KEY }}
           APPLICATION_DATA: ${{ github.event.client_payload.json_payload }}
-        run: |
-          # Executes the logic engine and saves output to a temporary file
-          python3 scripts/evaluate_loan.py > result.json
-          echo "GOVERNANCE_STATUS=$(jq -r .status result.json)" >> $GITHUB_ENV
+run: |
+           python3 scripts/evaluate_loan.py > result.json
+           python3 -c "import json; d=json.load(open('result.json')); print(f'GOVERNANCE_STATUS={d[\"status\"]}')" >> $GITHUB_ENV
 
       - name: Commit Ledger Entry (On Approval)
         if: env.GOVERNANCE_STATUS == 'approved'
