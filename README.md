@@ -34,6 +34,16 @@
 ![License](https://img.shields.io/badge/License-MIT-black)
 ![Ecosystem](https://img.shields.io/badge/Ecosystem-GitDigital%20Products-ff9800)
 
+## ❤️ Support This Project
+
+If you find this project valuable, consider supporting my work:
+
+- **GitHub Sponsors:** https://github.com/sponsors/RickCreator87  
+- **Buy Me a Coffee:** https://www.buymeacoffee.com/rickcreator87  
+
+Your support helps fund open‑source automation, governance tooling, and
+developer‑first infrastructure across the GitDigital ecosystem.
+
 
 # Richard's Credit Authority
 
