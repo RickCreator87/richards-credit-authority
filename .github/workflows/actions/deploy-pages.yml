@@ -1,0 +1,61 @@
+name: Build & Deploy GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # OPTIONAL: Setup Node, Python, Ruby, etc. depending on your site generator
+      # - name: Setup Node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 20
+
+      # Install dependencies + build your site
+      - name: Build site
+        run: |
+          # Example for static HTML:
+          mkdir -p ./dist
+          cp -R ./site/* ./dist/
+
+          # Example for Jekyll:
+          # bundle install
+          # bundle exec jekyll build -d dist
+
+          # Example for MkDocs:
+          # pip install mkdocs
+          # mkdocs build --site-dir dist
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
