@@ -1,3 +1,60 @@
+# Richards Credit Authority (RCA)
+> **The Definitive Source of Truth for Lending Governance, Compliance, and Risk Management.**
+
+---
+
+<div align="center">
+
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Status: Active](https://img.shields.io/badge/Status-Active-success)
+![Compliance: USA](https://img.shields.io/badge/Compliance-USA-blue)
+![Ecosystem: GitDigital](https://img.shields.io/badge/Ecosystem-GitDigital-black)
+![Security: GPG_Signed](https://img.shields.io/badge/Security-GPG_Signed-orange)
+![Integrity: Validated](https://img.shields.io/badge/Integrity-Validated-purple)
+
+</div>
+
+---
+
+## 📌 Overview
+The **Richards Credit Authority (RCA)** is a centralized governance repository for **Richard Duane Kindler** and **GitDigital LLC**. It defines the legal, financial, and risk-based parameters for private lending, liquidity provision, and digital asset management.
+
+By bridging the gap between traditional corporate governance and decentralized finance (DeFi), this repository ensures that every transaction is backed by a documented framework, a clear risk profile, and a transparent audit trail.
+
+---
+
+## 🛠 Repository Structure
+
+| Folder / File | Purpose | Key Function |
+| :--- | :--- | :--- |
+| `docs/compliance-framework.md` | **Legal Guardrails** | KYC/AML standards and identity verification. |
+| `docs/risk-profile.md` | **Financial Strategy** | Defines risk tiers (1-3) and exposure limits. |
+| `docs/tax-governance.md` | **Fiscal Integrity** | Manages interest rates (AFR) and IRS reporting. |
+| `schemas/lending-authority.json` | **Machine Readable** | Programmable JSON for integration with on-chain apps. |
+| `DISCLAIMER.md` | **Liability Protection** | Defines the scope and limits of the authority. |
+
+---
+
+## ⚖️ Governance Principles
+
+### 1. The Root of Truth
+All lending capacity and permissions are defined in `schemas/lending-authority.json`. This file acts as the primary oracle for any automated systems querying Richard's lending capacity.
+
+### 2. Risk Mitigation
+We employ a tiered risk strategy to protect the liquidity of the GitDigital ecosystem. No single transaction may exceed **20%** of total authority capacity without a manual override and secondary audit.
+
+### 3. Tax & Audit Readiness
+Every transfer of value is governed by the **Arms-Length Principle**. We maintain a strict separation between personal and corporate assets, ensuring all interest earned is documented for Form 1099-INT reporting.
+
+---
+
+## 🚀 Integration
+If you are a developer or auditor within the GitDigital ecosystem, you can fetch the current lending limits programmatically:
+
+```bash
+curl -s [https://raw.githubusercontent.com/RickCreator87/richards-credit-authority/main/schemas/lending-authority.json](https://raw.githubusercontent.com/RickCreator87/richards-credit-authority/main/schemas/lending-authority.json) | jq .lending_framework
+
+
 # 💸 Funding Badge Matrix
 
 | Tier | Badge | Meaning | Notes |
