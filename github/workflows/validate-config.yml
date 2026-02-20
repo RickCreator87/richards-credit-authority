@@ -1,0 +1,12 @@
+name: Validate Compliance Data
+on: [push, pull_request]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Validate JSON
+        run: |
+          find . -name "*.json" -type f -exec jq . {} +
+
