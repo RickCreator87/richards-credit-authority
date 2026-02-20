@@ -1,0 +1,19 @@
+{
+  "authority_id": "RDK-LEND-001",
+  "entity": "Richard Duane Kindler",
+  "associated_org": "GitDigital LLC",
+  "status": "Active",
+  "lending_framework": {
+    "currency": "USD",
+    "max_single_loan_capacity": 50000,
+    "total_aggregate_limit": 250000,
+    "permitted_asset_classes": ["Stablecoins", "Fiat", "Equity-Backed"]
+  },
+  "compliance": {
+    "kyc_verified": true,
+    "aml_monitoring": "Enabled",
+    "tax_jurisdiction": "USA"
+  },
+  "last_updated": "2024-05-20"
+}
+
