@@ -690,14 +690,14 @@ mindmap
 🎨 Color‑Coding (Optional Mermaid Classes)
 If you want the diagram to render with color in GitHub‑friendly Mermaid:
 
-`mermaid
+```mermaid
 classDef tier0 fill:#6a1b9a,stroke:#4a148c,color:#fff;
 classDef tier1 fill:#283593,stroke:#1a237e,color:#fff;
 classDef tier2 fill:#1565c0,stroke:#0d47a1,color:#fff;
 classDef tier3 fill:#00897b,stroke:#00695c,color:#fff;
 classDef tier4 fill:#7cb342,stroke:#558b2f,color:#fff;
 classDef tier5 fill:#546e7a,stroke:#37474f,color:#fff;
-`
+```
 
 
 
@@ -707,7 +707,7 @@ classDef tier5 fill:#546e7a,stroke:#37474f,color:#fff;
 
 README.md
 
-```markdown
+`markdown
 # Richard's Credit Authority
 
 [![CI Pipeline](https://github.com/RickCreator87/richards-credit-authority/actions/workflows/ci.yml/badge.svg)](https://github.com/RickCreator87/richards-credit-authority/actions/workflows/ci.yml)
@@ -1005,11 +1005,11 @@ See our Roadmap for planned features and future development.
 
 Disclaimer: This software is for demonstration and educational purposes. Always consult with legal and tax professionals for compliance with applicable laws and regulations.
 
-```
+`
 
 ### `CONTRIBUTING.md`
 
-```markdown
+`markdown
 # Contributing to Richard's Credit Authority
 
 Thank you for your interest in contributing to Richard's Credit Authority! This document provides guidelines and instructions for contributing to the project.
@@ -1047,7 +1047,7 @@ We welcome pull requests! Here's our process:
 2. **Create a feature branch**:
    ```bash
    git checkout -b feature/your-feature-name
-```
+`
 
 1. Make your changes
 2. Write or update tests for your changes
