@@ -98,7 +98,7 @@ curl -s [https://raw.githubusercontent.com/RickCreator87/richards-credit-authori
 - **🥇 Elite Tier** — Top sponsor
 
 - 
-
+```
 
 ![Governance](https://img.shields.io/badge/Governance-Active-blue)
 ![Compliance](https://img.shields.io/badge/Compliance-Solana%20Aligned-0a7)
